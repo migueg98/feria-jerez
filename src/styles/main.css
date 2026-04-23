@@ -1,0 +1,524 @@
+/* =============================================
+   FERIA DE JEREZ - Mapa de casetas
+   Estilos base. Mobile-first, moderno y limpio.
+   ============================================= */
+
+:root {
+  --color-primary: #b91c1c;
+  --color-primary-dark: #7f1d1d;
+  --color-accent: #f59e0b;
+  --color-bg: #faf7f2;
+  --color-surface: #ffffff;
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --header-height: 56px;
+  --search-height: 56px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* =============================================
+   LAYOUT PRINCIPAL
+   ============================================= */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.app-header {
+  height: var(--header-height);
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 0 16px;
+  box-shadow: 0 2px 8px var(--color-shadow);
+  z-index: 1000;
+  flex-shrink: 0;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: Georgia, 'Times New Roman', serif;
+  letter-spacing: 0.3px;
+}
+
+.app-subtitle {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.app-map {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* =============================================
+   BUSCADOR
+   ============================================= */
+
+.search-bar {
+  position: relative;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 10px 12px;
+  z-index: 900;
+  flex-shrink: 0;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #f3f4f6;
+  border-radius: var(--radius-md);
+  padding: 0 10px;
+}
+
+.search-icon {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.search-input-wrapper input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 8px;
+  font-size: 15px;
+  color: var(--color-text);
+  outline: none;
+  min-width: 0;
+}
+
+.search-input-wrapper input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.search-clear {
+  background: #d1d5db;
+  border: none;
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.search-clear:hover {
+  background: #9ca3af;
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 12px;
+  right: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  max-height: 320px;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px var(--color-shadow);
+  z-index: 901;
+}
+
+.search-result-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 14px;
+  color: var(--color-text);
+  transition: background 0.15s;
+}
+
+.search-result-item:hover {
+  background: #f9fafb;
+}
+
+.result-number {
+  background: var(--color-primary);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  min-width: 38px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.result-name {
+  flex: 1;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-tipo {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: capitalize;
+  flex-shrink: 0;
+}
+
+.search-empty,
+.search-more {
+  padding: 10px 12px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* =============================================
+   MARCADORES EN EL MAPA
+   ============================================= */
+
+.caseta-marker-wrapper {
+  background: transparent !important;
+  border: none !important;
+}
+
+.caseta-marker {
+  width: 100%;
+  height: 100%;
+  background: var(--color-primary);
+  border: 2px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s;
+}
+
+.caseta-marker:hover {
+  transform: scale(1.1);
+}
+
+.caseta-marker.selected {
+  background: var(--color-accent);
+  border-color: white;
+  font-size: 12px;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.3), 0 2px 8px rgba(0, 0, 0, 0.4);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.3), 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(245, 158, 11, 0.15), 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* =============================================
+   PANEL DE CASETA (info al hacer clic)
+   ============================================= */
+
+.panel-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1100;
+  animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.caseta-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
+  z-index: 1101;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: slideUp 0.25s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.panel-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+
+.panel-photo {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  overflow: hidden;
+}
+
+.panel-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.panel-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: Georgia, serif;
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  opacity: 0.8;
+}
+
+.panel-body {
+  padding: 16px 20px 28px;
+}
+
+.panel-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.panel-numero {
+  background: var(--color-primary);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+
+.panel-tipo {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  text-transform: capitalize;
+}
+
+.panel-nombre {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text);
+  font-family: Georgia, serif;
+}
+
+.panel-descripcion {
+  margin: 0 0 16px;
+  color: var(--color-text);
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+.panel-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.panel-field-label {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.panel-field-value {
+  font-size: 15px;
+  color: var(--color-text);
+}
+
+.panel-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  flex: 1;
+  border: none;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-whatsapp {
+  background: #25d366;
+  color: white;
+}
+
+.btn-whatsapp:hover {
+  background: #1ea855;
+}
+
+/* =============================================
+   BADGES DE TIPO (colores por categoría)
+   ============================================= */
+
+.tipo-publica { background: #dcfce7; color: #166534; }
+.tipo-privada { background: #fee2e2; color: #991b1b; }
+.tipo-peña { background: #fef3c7; color: #854d0e; }
+.tipo-peña_flamenca { background: #fef3c7; color: #854d0e; }
+.tipo-institucional { background: #dbeafe; color: #1e40af; }
+.tipo-empresarial { background: #f3e8ff; color: #6b21a8; }
+.tipo-familiar { background: #ffedd5; color: #9a3412; }
+
+/* =============================================
+   MODO EDITOR (solo con ?editor=1 en la URL)
+   ============================================= */
+
+.editor-banner {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  z-index: 1200;
+  pointer-events: none;
+}
+
+/* =============================================
+   DESKTOP: ajustes para pantallas grandes
+   ============================================= */
+
+@media (min-width: 768px) {
+  .app-header {
+    height: 64px;
+    padding: 0 24px;
+  }
+
+  .app-header h1 {
+    font-size: 22px;
+  }
+
+  .caseta-panel {
+    left: auto;
+    right: 20px;
+    bottom: 20px;
+    width: 400px;
+    max-height: calc(100vh - 120px);
+    border-radius: var(--radius-lg);
+  }
+
+  .panel-backdrop {
+    display: none;
+  }
+}
+
+/* =============================================
+   OVERRIDES DE LEAFLET (quitar estilos feos)
+   ============================================= */
+
+.leaflet-container {
+  font-family: inherit !important;
+}
+
+.leaflet-control-zoom a {
+  color: var(--color-text) !important;
+}

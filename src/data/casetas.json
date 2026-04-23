@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "numero": "001",
+    "nombre": "Caseta Los Amigos",
+    "tipo": "publica",
+    "descripcion": "Caseta familiar, ambiente tranquilo.",
+    "musica": "Sevillanas y pop español",
+    "foto": null,
+    "posicion": { "x": 150, "y": 125 }
+  },
+  {
+    "id": 2,
+    "numero": "002",
+    "nombre": "Caseta El Rebujito",
+    "tipo": "publica",
+    "descripcion": "Rebujito especial y tapas caseras.",
+    "musica": "Sevillanas clásicas",
+    "foto": null,
+    "posicion": { "x": 370, "y": 125 }
+  },
+  {
+    "id": 3,
+    "numero": "003",
+    "nombre": "Peña Flamenca Jerezana",
+    "tipo": "peña",
+    "descripcion": "Peña con actuaciones de cante en vivo.",
+    "musica": "Flamenco puro",
+    "foto": null,
+    "posicion": { "x": 590, "y": 125 }
+  },
+  {
+    "id": 4,
+    "numero": "004",
+    "nombre": "Caseta Ayuntamiento",
+    "tipo": "institucional",
+    "descripcion": "Caseta municipal, abierta al público.",
+    "musica": "Variada",
+    "foto": null,
+    "posicion": { "x": 830, "y": 125 }
+  },
+  {
+    "id": 5,
+    "numero": "015",
+    "nombre": "Caseta La Alegría",
+    "tipo": "publica",
+    "descripcion": "Una de las más animadas del recinto.",
+    "musica": "Sevillanas y reguetón",
+    "foto": null,
+    "posicion": { "x": 150, "y": 265 }
+  },
+  {
+    "id": 6,
+    "numero": "022",
+    "nombre": "Caseta Hermandad del Rocío",
+    "tipo": "peña",
+    "descripcion": "Ambiente rociero tradicional.",
+    "musica": "Sevillanas rocieras",
+    "foto": null,
+    "posicion": { "x": 370, "y": 265 }
+  },
+  {
+    "id": 7,
+    "numero": "030",
+    "nombre": "Caseta El Caballo",
+    "tipo": "publica",
+    "descripcion": "Decoración ecuestre. Buenas tapas.",
+    "musica": "Pop y sevillanas",
+    "foto": null,
+    "posicion": { "x": 590, "y": 265 }
+  },
+  {
+    "id": 8,
+    "numero": "045",
+    "nombre": "Caseta Diputación",
+    "tipo": "institucional",
+    "descripcion": "Caseta oficial de la Diputación de Cádiz.",
+    "musica": "Variada",
+    "foto": null,
+    "posicion": { "x": 830, "y": 265 }
+  },
+  {
+    "id": 9,
+    "numero": "052",
+    "nombre": "Caseta La Garrocha",
+    "tipo": "privada",
+    "descripcion": "Caseta de socios.",
+    "musica": "Sevillanas",
+    "foto": null,
+    "posicion": { "x": 150, "y": 405 }
+  },
+  {
+    "id": 10,
+    "numero": "060",
+    "nombre": "Caseta El Albero",
+    "tipo": "publica",
+    "descripcion": "Ambiente joven y música actual.",
+    "musica": "Pop, reguetón, flamenco fusión",
+    "foto": null,
+    "posicion": { "x": 370, "y": 405 }
+  },
+  {
+    "id": 11,
+    "numero": "068",
+    "nombre": "Caseta Los Claveles",
+    "tipo": "publica",
+    "descripcion": "Clásica y acogedora.",
+    "musica": "Sevillanas y copla",
+    "foto": null,
+    "posicion": { "x": 590, "y": 405 }
+  },
+  {
+    "id": 12,
+    "numero": "075",
+    "nombre": "Caseta Jerez Centro",
+    "tipo": "empresarial",
+    "descripcion": "Patrocinada por comerciantes del centro.",
+    "musica": "Sevillanas y pop",
+    "foto": null,
+    "posicion": { "x": 830, "y": 405 }
+  },
+  {
+    "id": 13,
+    "numero": "082",
+    "nombre": "Caseta La Feria",
+    "tipo": "publica",
+    "descripcion": "Caseta tradicional jerezana.",
+    "musica": "Flamenco y sevillanas",
+    "foto": null,
+    "posicion": { "x": 150, "y": 545 }
+  },
+  {
+    "id": 14,
+    "numero": "090",
+    "nombre": "Caseta El Tío Pepe",
+    "tipo": "empresarial",
+    "descripcion": "Bodegas González Byass. Degustación de vinos.",
+    "musica": "Ambiente tranquilo, música en vivo",
+    "foto": null,
+    "posicion": { "x": 370, "y": 545 }
+  },
+  {
+    "id": 15,
+    "numero": "098",
+    "nombre": "Caseta La Yegua",
+    "tipo": "privada",
+    "descripcion": "Caseta de invitación.",
+    "musica": "Sevillanas",
+    "foto": null,
+    "posicion": { "x": 590, "y": 545 }
+  }
+]
