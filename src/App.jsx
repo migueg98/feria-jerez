@@ -3,8 +3,8 @@ import MapView from './components/MapView.jsx';
 import SearchBar from './components/SearchBar.jsx';
 import CasetaPanel from './components/CasetaPanel.jsx';
 import EditorPanel from './components/EditorPanel.jsx';
-import casetasOriginal from './data/casetas.json';
-import { useEditorState } from './hooks/useEditorState.js';
+import casetasSeed from './data/casetas.json';
+import { useCasetasSync } from './hooks/useCasetasSync.js';
 
 function normalize(text) {
   return (text || '')
@@ -25,9 +25,9 @@ export default function App() {
   const [editorSelectedId, setEditorSelectedId] = useState(null);
   const [lastAssigned, setLastAssigned] = useState(null);
 
-  // Hook con estado del editor (overrides + persistencia en localStorage)
-  const { overrides, casetas, updateCaseta, resetCaseta, resetAll, stats } =
-    useEditorState(casetasOriginal);
+  // Sincronización con Supabase (lectura + realtime + writes optimistas)
+  const { casetas, status, updateCaseta, resetCaseta, stats } =
+    useCasetasSync(casetasSeed);
 
   // Modo editor: ?editor=1 en la URL
   const editorMode = useMemo(() => {
@@ -57,7 +57,7 @@ export default function App() {
     [editorSelectedId, casetas],
   );
 
-  // Siguiente caseta sin posición
+  // Siguiente caseta pendiente (sin posición)
   const nextPendingCasetaId = useCallback(
     (afterId) => {
       const list = casetas;
@@ -69,7 +69,7 @@ export default function App() {
     [casetas],
   );
 
-  // Click en zona vacía del plano (modo editor): asigna posición a la caseta seleccionada.
+  // Click en zona vacía del plano (modo editor): asigna posición.
   const handleEditorClick = useCallback(
     (x, y) => {
       if (!editorSelectedId) {
@@ -82,7 +82,7 @@ export default function App() {
         return;
       }
       const current = casetas.find((c) => c.id === editorSelectedId);
-      // Si la caseta está bloqueada, click fuera = cerrar panel de edición
+      // Si está bloqueada, click fuera = cerrar panel de edición
       if (current?.locked) {
         setEditorSelectedId(null);
         return;
@@ -97,7 +97,6 @@ export default function App() {
     [editorSelectedId, casetas, updateCaseta],
   );
 
-  // Mover caseta arrastrando (solo si no está bloqueada)
   const handleMoveCaseta = useCallback(
     (id, { x, y }) => {
       const c = casetas.find((cc) => cc.id === id);
@@ -107,7 +106,6 @@ export default function App() {
     [updateCaseta, casetas],
   );
 
-  // Redimensionar (solo si no está bloqueada)
   const handleResizeCaseta = useCallback(
     (id, tamano) => {
       const c = casetas.find((cc) => cc.id === id);
@@ -117,7 +115,6 @@ export default function App() {
     [updateCaseta, casetas],
   );
 
-  // Bloquear/desbloquear la caseta seleccionada. Al bloquear, saltamos a la siguiente pendiente.
   const handleToggleLock = useCallback(() => {
     if (!editorSelectedId) return;
     const current = casetas.find((c) => c.id === editorSelectedId);
@@ -129,11 +126,9 @@ export default function App() {
     }
   }, [editorSelectedId, casetas, updateCaseta, nextPendingCasetaId]);
 
-  // Cambio de campos desde el formulario del editor
   const handleFieldChange = useCallback(
     (id, field, value) => {
       if (field === 'forma') {
-        // Al cambiar de forma, inicializar el tamaño correspondiente si falta
         const cur = casetas.find((c) => c.id === id);
         const patch = { forma: value };
         if (value === 'circulo' && !cur?.tamano?.radio) {
@@ -158,22 +153,8 @@ export default function App() {
     setLastAssigned(null);
   }, [editorSelectedId, resetCaseta]);
 
-  const handleResetAll = useCallback(() => {
-    // eslint-disable-next-line no-alert
-    if (
-      !window.confirm(
-        '¿Seguro que quieres borrar TODOS los cambios del editor? Esto no se puede deshacer.',
-      )
-    ) {
-      return;
-    }
-    resetAll();
-    setLastAssigned(null);
-  }, [resetAll]);
-
   const handleDownload = useCallback(() => {
-    const out = casetasOriginal.map((c) => ({ ...c, ...(overrides[c.id] || {}) }));
-    const json = JSON.stringify(out, null, 2) + '\n';
+    const json = JSON.stringify(casetas, null, 2) + '\n';
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -181,15 +162,16 @@ export default function App() {
     a.download = 'casetas.json';
     a.click();
     URL.revokeObjectURL(url);
-  }, [overrides]);
+  }, [casetas]);
 
   // Al activar editor, auto-seleccionar primera pendiente si nada está seleccionado
   useEffect(() => {
     if (!editorMode) return;
     if (editorSelectedId) return;
+    if (status !== 'ready') return;
     const first = casetas.find((c) => !c.posicion);
     if (first) setEditorSelectedId(first.id);
-  }, [editorMode, editorSelectedId, casetas]);
+  }, [editorMode, editorSelectedId, casetas, status]);
 
   return (
     <div className={`app ${editorMode ? 'app-editor' : ''}`}>
@@ -239,10 +221,10 @@ export default function App() {
           onFieldChange={handleFieldChange}
           onToggleLock={handleToggleLock}
           onResetSelected={handleResetSelected}
-          onResetAll={handleResetAll}
           onDownload={handleDownload}
           stats={stats}
           lastAssigned={lastAssigned}
+          syncStatus={status}
         />
       )}
     </div>

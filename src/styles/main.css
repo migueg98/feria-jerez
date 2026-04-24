@@ -615,6 +615,20 @@ button {
   font-weight: 600;
 }
 
+.editor-sync {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+.editor-sync.sync-loading { background: #f3f4f6; color: #4b5563; }
+.editor-sync.sync-ready { background: #dcfce7; color: #166534; }
+.editor-sync.sync-saving { background: #dbeafe; color: #1e40af; }
+.editor-sync.sync-error { background: #fee2e2; color: #991b1b; }
+.editor-sync.sync-offline { background: #fef3c7; color: #92400e; }
+
 .editor-current {
   padding: 12px 14px;
   padding-right: 34px;

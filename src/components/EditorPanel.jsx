@@ -178,6 +178,14 @@ function CasetaForm({ caseta, onFieldChange }) {
   );
 }
 
+const SYNC_LABELS = {
+  loading: { text: 'Cargando…', cls: 'sync-loading' },
+  ready: { text: '✓ Sincronizado', cls: 'sync-ready' },
+  saving: { text: '⟳ Guardando…', cls: 'sync-saving' },
+  error: { text: '⚠ Error al guardar', cls: 'sync-error' },
+  offline: { text: '⚡ Sin conexión', cls: 'sync-offline' },
+};
+
 export default function EditorPanel({
   casetas,
   selectedCaseta,
@@ -186,10 +194,10 @@ export default function EditorPanel({
   onFieldChange,
   onToggleLock,
   onResetSelected,
-  onResetAll,
   onDownload,
   stats,
   lastAssigned,
+  syncStatus,
 }) {
   const [filterText, setFilterText] = useState('');
   const [showOnlyPending, setShowOnlyPending] = useState(false);
@@ -209,6 +217,7 @@ export default function EditorPanel({
   const selected = selectedCaseta;
   const isPlaced = Boolean(selected?.posicion);
   const isLocked = Boolean(selected?.locked);
+  const sync = SYNC_LABELS[syncStatus] || SYNC_LABELS.ready;
 
   return (
     <aside className="editor-panel">
@@ -218,6 +227,7 @@ export default function EditorPanel({
           {stats.placed} / {stats.total} · {stats.pending} pend.
         </span>
       </div>
+      <div className={`editor-sync ${sync.cls}`}>{sync.text}</div>
 
       {selected ? (
         <>
@@ -338,15 +348,12 @@ export default function EditorPanel({
         <button type="button" onClick={onDownload} className="btn btn-primary">
           💾 Descargar JSON
         </button>
-        <button type="button" onClick={onResetAll} className="btn btn-danger">
-          Reset todo
-        </button>
       </div>
 
       <div className="editor-note">
-        Tus cambios se guardan automáticamente en este navegador. Para
-        publicarlos, pulsa <strong>Descargar JSON</strong> y reemplaza{' '}
-        <code>src/data/casetas.json</code>.
+        Los cambios se guardan en la base de datos al instante y se ven desde
+        cualquier dispositivo. <strong>Descargar JSON</strong> te da una copia
+        de seguridad del estado actual para <code>src/data/casetas.json</code>.
       </div>
     </aside>
   );
