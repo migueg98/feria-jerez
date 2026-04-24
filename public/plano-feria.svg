@@ -1,76 +1,308 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Plano simplificado de la Feria del Caballo de Jerez.
-  Sistema de coordenadas: 1000 x 700 (se mapea a Leaflet CRS.Simple)
-  Las "manzanas" son bloques grises donde se colocan las casetas.
-  Las calles llevan los nombres reales del recinto Gonz�lez Hontoria.
+  Plano de la Feria del Caballo de Jerez 2026
+  Replicado en SVG desde el plano oficial del Ayuntamiento.
+  Sistema de coordenadas: 1024 x 707 (se mapea a Leaflet CRS.Simple).
+  Las casetas NO se dibujan aqu�: las superpone Leaflet como marcadores.
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 707" width="1024" height="707" font-family="system-ui, -apple-system, sans-serif">
+
   <defs>
-    <pattern id="albero" width="20" height="20" patternUnits="userSpaceOnUse">
-      <rect width="20" height="20" fill="#f4e4c1"/>
-      <circle cx="10" cy="10" r="0.5" fill="#d4b896" opacity="0.5"/>
+    <!-- Patr�n suelo albero -->
+    <pattern id="albero" width="24" height="24" patternUnits="userSpaceOnUse">
+      <rect width="24" height="24" fill="#f4e4c1"/>
+      <circle cx="6" cy="6" r="0.4" fill="#d4b896" opacity="0.5"/>
+      <circle cx="18" cy="14" r="0.4" fill="#d4b896" opacity="0.5"/>
     </pattern>
+
+    <!-- �rbol peque�o reutilizable -->
+    <symbol id="tree" viewBox="0 0 12 16">
+      <ellipse cx="6" cy="6" rx="5.5" ry="6" fill="#6b8e3c"/>
+      <ellipse cx="6" cy="5" rx="4" ry="4" fill="#7ea54a" opacity="0.8"/>
+      <rect x="5" y="11" width="2" height="4" fill="#6b4423"/>
+    </symbol>
+
+    <!-- Palmera peque�a -->
+    <symbol id="palm" viewBox="0 0 10 16">
+      <rect x="4.2" y="8" width="1.6" height="7" fill="#8b6f47"/>
+      <path d="M5 8 Q1 6 0 3 M5 8 Q9 6 10 3 M5 8 Q3 4 1 2 M5 8 Q7 4 9 2 M5 8 Q5 3 5 1" stroke="#6b8e3c" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- Icono puerta con caseta rosa -->
+    <symbol id="gate" viewBox="0 0 30 20">
+      <rect x="0" y="4" width="30" height="14" fill="#d97a8a" stroke="#a04050" stroke-width="0.8"/>
+      <rect x="10" y="8" width="10" height="8" fill="#b35568"/>
+      <polygon points="0,4 15,0 30,4" fill="#c66478"/>
+    </symbol>
+
+    <!-- Marcador servicio (cruz roja) -->
+    <symbol id="serv-health" viewBox="0 0 20 20">
+      <circle cx="10" cy="10" r="9" fill="white" stroke="#c93030" stroke-width="1.5"/>
+      <rect x="8.5" y="4" width="3" height="12" fill="#c93030"/>
+      <rect x="4" y="8.5" width="12" height="3" fill="#c93030"/>
+    </symbol>
+    <symbol id="serv-police" viewBox="0 0 20 20">
+      <circle cx="10" cy="10" r="9" fill="#e8b5b5" stroke="#8b3030" stroke-width="1.5"/>
+      <text x="10" y="13.5" font-size="10" font-weight="bold" fill="#8b3030" text-anchor="middle">P</text>
+    </symbol>
+
+    <!-- Gradiente suave para IFECA -->
+    <linearGradient id="ifecaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f4c98d"/>
+      <stop offset="100%" stop-color="#e8b56d"/>
+    </linearGradient>
   </defs>
 
-  <!-- Fondo: suelo de albero -->
-  <rect width="1000" height="700" fill="url(#albero)"/>
+  <!-- ===== FONDO ALBERO (todo el recinto) ===== -->
+  <rect width="1024" height="707" fill="url(#albero)"/>
 
-  <!-- Borde del recinto -->
-  <rect x="20" y="20" width="960" height="660" fill="none" stroke="#8b6f47" stroke-width="3" stroke-dasharray="4 4"/>
+  <!-- ===== MANZANAS DE CASETAS (rectángulos rosa, replicando plano oficial) =====
+       Son las zonas rosadas donde se agrupan las casetas. Los marcadores de Leaflet
+       se superponen encima (uno por caseta). -->
+  <g id="manzanas">
+    <!-- M1: Columna izq (casetas 1-11) entre jardín y La Paquera, abajo -->
+    <rect x="240" y="435" width="26" height="230" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
 
-  <!-- ====== MANZANAS DE CASETAS (bloques donde van las casetas) ====== -->
-  <!-- Fila superior -->
-  <rect x="60"  y="80"  width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="280" y="80"  width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="500" y="80"  width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="720" y="80"  width="220" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
+    <!-- M2: Fila horizontal encima del Paseo Palmeras (casetas 12-22) -->
+    <rect x="50" y="441" width="266" height="22" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
 
-  <!-- Fila 2 -->
-  <rect x="60"  y="220" width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="280" y="220" width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="500" y="220" width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="720" y="220" width="220" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
+    <!-- M3: Fila horizontal debajo del Paseo Palmeras (casetas 23-36) -->
+    <rect x="50" y="367" width="344" height="22" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
 
-  <!-- Fila 3 -->
-  <rect x="60"  y="360" width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="280" y="360" width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="500" y="360" width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="720" y="360" width="220" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
+    <!-- M4: Columna vertical casetas 37-50 (x=295) -->
+    <rect x="283" y="55" width="24" height="310" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
 
-  <!-- Fila inferior -->
-  <rect x="60"  y="500" width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="280" y="500" width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="500" y="500" width="180" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
-  <rect x="720" y="500" width="220" height="90" fill="#e8d5b0" stroke="#a88960" stroke-width="1.5" rx="4"/>
+    <!-- M5: Columna vertical casetas 51-58 (x=330), entre La Paquera y Mi Joto -->
+    <rect x="318" y="72" width="24" height="245" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
 
-  <!-- ====== NOMBRES DE CALLES (horizontales) ====== -->
-  <g font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#6b4423" text-anchor="middle">
-    <text x="500" y="55">CALLE REAL</text>
-    <text x="500" y="200">CALLE PESCADER�A</text>
-    <text x="500" y="340">CALLE AZAHARES</text>
-    <text x="500" y="480">CALLE CLAVEL</text>
-    <text x="500" y="620">CALLE ROSA</text>
+    <!-- M6: Manzanas centro (entre Mi Joto Solera y José Mercé) -->
+    <rect x="353" y="72" width="24" height="100" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="353" y="205" width="24" height="110" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="353" y="330" width="24" height="35" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="388" y="72" width="24" height="100" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="388" y="205" width="24" height="110" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="388" y="330" width="24" height="35" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+
+    <!-- M7: Manzanas entre José Mercé e IFECA -->
+    <rect x="438" y="72" width="24" height="100" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="438" y="205" width="24" height="110" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="438" y="330" width="24" height="35" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="473" y="72" width="24" height="100" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="473" y="205" width="24" height="110" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="473" y="330" width="24" height="35" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="508" y="72" width="24" height="100" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="508" y="205" width="24" height="110" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="508" y="330" width="24" height="35" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="543" y="72" width="24" height="100" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="543" y="205" width="24" height="110" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="543" y="330" width="24" height="35" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="578" y="72" width="24" height="100" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="578" y="205" width="24" height="110" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="578" y="330" width="24" height="35" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+
+    <!-- M8: Fila horizontal debajo del Paseo Palmeras (casetas 160-171, lado derecho) -->
+    <rect x="465" y="367" width="412" height="22" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+
+    <!-- M9: Manzanas zona sur (entre Paseo Palmeras y Antonio Núñez Chocolate) -->
+    <!-- Fila superior -->
+    <rect x="280" y="441" width="320" height="22" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <!-- Fila siguiente -->
+    <rect x="50" y="470" width="550" height="22" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="50" y="500" width="550" height="22" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <!-- Fila inferior -->
+    <rect x="50" y="555" width="180" height="22" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+    <rect x="280" y="555" width="320" height="22" fill="#f5c8d2" stroke="#c77a8c" stroke-width="0.8" rx="1"/>
+
+    <!-- M10: Zona derecha (casetas no tradicionales 172-175) -->
+    <rect x="808" y="441" width="170" height="22" fill="#d5c0e8" stroke="#8b6fab" stroke-width="0.8" rx="1"/>
+    <rect x="618" y="441" width="180" height="22" fill="#d5c0e8" stroke="#8b6fab" stroke-width="0.8" rx="1"/>
+    <rect x="618" y="470" width="360" height="22" fill="#d5c0e8" stroke="#8b6fab" stroke-width="0.8" rx="1"/>
+    <rect x="618" y="500" width="360" height="22" fill="#d5c0e8" stroke="#8b6fab" stroke-width="0.8" rx="1"/>
+    <rect x="618" y="530" width="360" height="22" fill="#d5c0e8" stroke="#8b6fab" stroke-width="0.8" rx="1"/>
   </g>
 
-  <!-- ====== NOMBRES DE CALLES (verticales / transversales) ====== -->
-  <g font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#8b6f47" text-anchor="middle" opacity="0.7">
-    <text x="260" y="670" transform="rotate(-90 260 670)">C. Nardo</text>
-    <text x="480" y="670" transform="rotate(-90 480 670)">C. Jazm�n</text>
-    <text x="700" y="670" transform="rotate(-90 700 670)">C. Geranio</text>
-  </g>
+  <!-- ===== ZONAS EXTERIORES (moradas) ===== -->
+  <!-- Dep�sito de semovientes (arriba derecha) -->
+  <rect x="620" y="0" width="365" height="24" fill="#d8c7e6" stroke="#a88fb8" stroke-width="0.5"/>
+  <text x="802" y="15" font-size="9" font-weight="600" fill="#6b4b8a" text-anchor="middle" letter-spacing="0.5">DEP�SITO DE SEMOVIENTES</text>
 
-  <!-- ====== ENTRADAS / PORTADA ====== -->
+  <!-- Zona de atracciones (franja derecha) -->
+  <rect x="985" y="28" width="39" height="640" fill="#d8c7e6" stroke="#a88fb8" stroke-width="0.5"/>
+  <text x="1005" y="350" font-size="9" font-weight="600" fill="#6b4b8a" text-anchor="middle" transform="rotate(-90 1005 350)" letter-spacing="1">ZONA DE ATRACCIONES</text>
+
+  <!-- ===== AVENIDA �LVARO DOMECQ (izquierda) ===== -->
+  <rect x="0" y="28" width="28" height="640" fill="#ead9b3" stroke="#c7ae7e" stroke-width="0.5"/>
+  <text x="14" y="350" font-size="9" font-weight="600" fill="#6b4423" text-anchor="middle" transform="rotate(-90 14 350)" letter-spacing="2">AVENIDA �LVARO DOMECQ</text>
+
+  <!-- ===== AVENIDAS HORIZONTALES (arriba/abajo) ===== -->
+  <!-- Av. del Ej�rcito (arriba) -->
+  <rect x="28" y="0" width="592" height="24" fill="#ead9b3" stroke="#c7ae7e" stroke-width="0.5"/>
+  <text x="400" y="15" font-size="10" font-weight="700" fill="#6b4423" text-anchor="middle" letter-spacing="2">AVENIDA DEL EJ�RCITO</text>
+
+  <!-- Paseo de la Rosaleda (abajo) -->
+  <rect x="28" y="670" width="957" height="37" fill="#ead9b3" stroke="#c7ae7e" stroke-width="0.5"/>
+  <text x="500" y="692" font-size="10" font-weight="700" fill="#6b4423" text-anchor="middle" letter-spacing="2">PASEO DE LA ROSALEDA</text>
+
+  <!-- ===== JARDINES DEL BOSQUE (esquina arriba-izq) ===== -->
+  <rect x="32" y="28" width="238" height="312" fill="#c8dcae" stroke="#8ba870" stroke-width="1" rx="2"/>
+  <text x="151" y="170" font-size="13" font-weight="700" fill="#4a6b2a" text-anchor="middle" letter-spacing="1.5">JARDINES DEL BOSQUE</text>
+  <!-- �rboles dispersos -->
+  <use href="#tree" x="50" y="50" width="12" height="16"/>
+  <use href="#tree" x="80" y="60" width="14" height="18"/>
+  <use href="#tree" x="120" y="45" width="12" height="16"/>
+  <use href="#tree" x="170" y="55" width="14" height="18"/>
+  <use href="#tree" x="210" y="70" width="12" height="16"/>
+  <use href="#tree" x="240" y="55" width="12" height="16"/>
+  <use href="#tree" x="60" y="100" width="13" height="17"/>
+  <use href="#tree" x="200" y="110" width="14" height="18"/>
+  <use href="#tree" x="240" y="120" width="12" height="16"/>
+  <use href="#tree" x="50" y="220" width="14" height="18"/>
+  <use href="#tree" x="85" y="240" width="12" height="16"/>
+  <use href="#tree" x="130" y="250" width="14" height="18"/>
+  <use href="#tree" x="180" y="230" width="12" height="16"/>
+  <use href="#tree" x="225" y="260" width="14" height="18"/>
+  <use href="#tree" x="75" y="290" width="13" height="17"/>
+  <use href="#tree" x="170" y="310" width="12" height="16"/>
+  <use href="#tree" x="220" y="295" width="14" height="18"/>
+
+  <!-- ===== LA ROSALEDA (esquina abajo-izq) ===== -->
+  <rect x="32" y="465" width="238" height="205" fill="#c8dcae" stroke="#8ba870" stroke-width="1" rx="2"/>
+  <text x="151" y="570" font-size="14" font-weight="700" fill="#4a6b2a" text-anchor="middle" letter-spacing="1.5">LA ROSALEDA</text>
+  <use href="#tree" x="50" y="485" width="12" height="16"/>
+  <use href="#tree" x="90" y="500" width="14" height="18"/>
+  <use href="#tree" x="130" y="485" width="12" height="16"/>
+  <use href="#tree" x="180" y="495" width="14" height="18"/>
+  <use href="#tree" x="225" y="485" width="12" height="16"/>
+  <use href="#tree" x="65" y="610" width="13" height="17"/>
+  <use href="#tree" x="110" y="625" width="12" height="16"/>
+  <use href="#tree" x="155" y="615" width="14" height="18"/>
+  <use href="#tree" x="200" y="625" width="13" height="17"/>
+  <use href="#tree" x="240" y="615" width="12" height="16"/>
+
+  <!-- ===== PARRILLA DE JEREZ (jard�n abajo derecha) ===== -->
+  <rect x="618" y="578" width="368" height="90" fill="#c8dcae" stroke="#8ba870" stroke-width="1" rx="2"/>
+  <text x="802" y="625" font-size="12" font-weight="700" fill="#4a6b2a" text-anchor="middle" letter-spacing="1">"PARRILLA DE JEREZ"</text>
+  <use href="#tree" x="640" y="590" width="12" height="16"/>
+  <use href="#tree" x="685" y="600" width="14" height="18"/>
+  <use href="#tree" x="730" y="588" width="12" height="16"/>
+  <use href="#tree" x="780" y="600" width="14" height="18"/>
+  <use href="#tree" x="840" y="590" width="12" height="16"/>
+  <use href="#tree" x="890" y="600" width="14" height="18"/>
+  <use href="#tree" x="940" y="590" width="12" height="16"/>
+  <use href="#tree" x="665" y="645" width="12" height="16"/>
+  <use href="#tree" x="720" y="650" width="13" height="17"/>
+  <use href="#tree" x="810" y="645" width="12" height="16"/>
+  <use href="#tree" x="870" y="650" width="14" height="18"/>
+  <use href="#tree" x="930" y="645" width="12" height="16"/>
+
+  <!-- ===== IFECA (centro-derecha) ===== -->
   <g>
-    <rect x="420" y="10" width="160" height="20" fill="#b91c1c" rx="2"/>
-    <text x="500" y="25" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="white" text-anchor="middle">PORTADA</text>
+    <rect x="640" y="40" width="340" height="290" fill="url(#ifecaGrad)" stroke="#c7994a" stroke-width="1.5"/>
+    <rect x="670" y="70" width="280" height="230" fill="none" stroke="#c7994a" stroke-width="1" opacity="0.6"/>
+    <rect x="700" y="100" width="220" height="170" fill="none" stroke="#c7994a" stroke-width="1" opacity="0.5"/>
+    <rect x="735" y="130" width="150" height="110" fill="#ffffff" stroke="#c7994a" stroke-width="1" opacity="0.9"/>
+    <text x="810" y="190" font-size="18" font-weight="800" fill="#8b6f00" text-anchor="middle" letter-spacing="3">IFECA</text>
+    <!-- �rboles perimetrales de IFECA (parte inferior) -->
+    <use href="#tree" x="650" y="335" width="12" height="16"/>
+    <use href="#tree" x="700" y="335" width="14" height="18"/>
+    <use href="#tree" x="750" y="335" width="12" height="16"/>
+    <use href="#tree" x="800" y="335" width="14" height="18"/>
+    <use href="#tree" x="850" y="335" width="12" height="16"/>
+    <use href="#tree" x="900" y="335" width="14" height="18"/>
+    <use href="#tree" x="950" y="335" width="12" height="16"/>
   </g>
 
-  <!-- Puntos cardinales -->
-  <g font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#8b6f47" opacity="0.6">
-    <text x="30" y="35">N</text>
-    <text x="960" y="35">NE</text>
-    <text x="30" y="675">SO</text>
-    <text x="955" y="675">SE</text>
+  <!-- ===== CALLES HORIZONTALES (con nombres) ===== -->
+  <g font-size="10" font-weight="700" fill="#6b4423" text-anchor="middle" letter-spacing="1.5">
+    <text x="380" y="56">"T�O BORRICO"</text>
+    <text x="380" y="193">ANTONIO CHAC�N</text>
+    <text x="380" y="323">TERREMOTO DE JEREZ</text>
+    <text x="320" y="493">MANUEL MONEO</text>
+    <text x="390" y="620">ANTONIO N��EZ "CHOCOLATE"</text>
   </g>
+
+  <!-- ===== PASEO DE LAS PALMERAS (calle principal horizontal) ===== -->
+  <rect x="28" y="400" width="957" height="36" fill="#ead9b3" stroke="#c7ae7e" stroke-width="0.5"/>
+  <g>
+    <!-- Palmeras arriba y abajo del paseo, alternadas -->
+    <use href="#palm" x="40" y="395" width="12" height="18"/>
+    <use href="#palm" x="90" y="395" width="12" height="18"/>
+    <use href="#palm" x="140" y="395" width="12" height="18"/>
+    <use href="#palm" x="190" y="395" width="12" height="18"/>
+    <use href="#palm" x="240" y="395" width="12" height="18"/>
+    <use href="#palm" x="300" y="395" width="12" height="18"/>
+    <use href="#palm" x="360" y="395" width="12" height="18"/>
+    <use href="#palm" x="420" y="395" width="12" height="18"/>
+    <use href="#palm" x="480" y="395" width="12" height="18"/>
+    <use href="#palm" x="540" y="395" width="12" height="18"/>
+    <use href="#palm" x="600" y="395" width="12" height="18"/>
+    <use href="#palm" x="660" y="395" width="12" height="18"/>
+    <use href="#palm" x="720" y="395" width="12" height="18"/>
+    <use href="#palm" x="780" y="395" width="12" height="18"/>
+    <use href="#palm" x="840" y="395" width="12" height="18"/>
+    <use href="#palm" x="900" y="395" width="12" height="18"/>
+    <use href="#palm" x="950" y="395" width="12" height="18"/>
+    <use href="#palm" x="65" y="423" width="12" height="18"/>
+    <use href="#palm" x="115" y="423" width="12" height="18"/>
+    <use href="#palm" x="165" y="423" width="12" height="18"/>
+    <use href="#palm" x="215" y="423" width="12" height="18"/>
+    <use href="#palm" x="325" y="423" width="12" height="18"/>
+    <use href="#palm" x="385" y="423" width="12" height="18"/>
+    <use href="#palm" x="445" y="423" width="12" height="18"/>
+    <use href="#palm" x="505" y="423" width="12" height="18"/>
+    <use href="#palm" x="565" y="423" width="12" height="18"/>
+    <use href="#palm" x="625" y="423" width="12" height="18"/>
+    <use href="#palm" x="685" y="423" width="12" height="18"/>
+    <use href="#palm" x="745" y="423" width="12" height="18"/>
+    <use href="#palm" x="805" y="423" width="12" height="18"/>
+    <use href="#palm" x="865" y="423" width="12" height="18"/>
+    <use href="#palm" x="925" y="423" width="12" height="18"/>
+  </g>
+  <text x="500" y="420" font-size="11" font-weight="800" fill="#8b6f47" text-anchor="middle" letter-spacing="3" opacity="0.7">PASEO DE LAS PALMERAS</text>
+
+  <!-- ===== CALLES VERTICALES (nombres) ===== -->
+  <g font-size="10" font-weight="700" fill="#6b4423" letter-spacing="1.5">
+    <text text-anchor="middle" transform="rotate(-90 278 240)" x="278" y="240">LA PAQUERA DE JEREZ</text>
+    <text text-anchor="middle" transform="rotate(-90 365 240)" x="365" y="240" font-size="8">MI JOTO SOLERA</text>
+    <text text-anchor="middle" transform="rotate(-90 450 240)" x="450" y="240">JOS� MERC�</text>
+    <text text-anchor="middle" transform="rotate(-90 283 560)" x="283" y="560">LOLA FLORES</text>
+    <text text-anchor="middle" transform="rotate(-90 377 560)" x="377" y="560">TORRE</text>
+    <text text-anchor="middle" transform="rotate(-90 335 560)" x="335" y="560" font-size="8">MANUEL</text>
+    <text text-anchor="middle" transform="rotate(-90 465 560)" x="465" y="560">MOR�N</text>
+    <text text-anchor="middle" transform="rotate(-90 555 560)" x="555" y="560">EL NI�O GLORIA</text>
+    <text text-anchor="middle" transform="rotate(-90 655 560)" x="655" y="560">ANGELITA G�MEZ</text>
+    <text text-anchor="middle" transform="rotate(-90 750 560)" x="750" y="560">LA MACANITA</text>
+  </g>
+
+  <!-- ===== PUERTAS ===== -->
+  <g>
+    <!-- Puerta 1 (izq, centro) -->
+    <use href="#gate" x="0" y="370" width="28" height="20"/>
+    <text x="14" y="365" font-size="9" font-weight="700" fill="#b91c1c" text-anchor="middle">PUERTA 1</text>
+    <!-- Puerta 2 (arriba izq) -->
+    <use href="#gate" x="200" y="4" width="28" height="20"/>
+    <text x="214" y="38" font-size="9" font-weight="700" fill="#b91c1c" text-anchor="middle">PUERTA 2</text>
+    <!-- Puerta 3 (arriba der) -->
+    <use href="#gate" x="510" y="4" width="28" height="20"/>
+    <text x="524" y="38" font-size="9" font-weight="700" fill="#b91c1c" text-anchor="middle">PUERTA 3</text>
+    <!-- Puerta 4 (der, centro) -->
+    <use href="#gate" x="985" y="400" width="39" height="20" transform="rotate(180 1004 410)"/>
+    <text x="1004" y="395" font-size="9" font-weight="700" fill="#b91c1c" text-anchor="middle">PUERTA 4</text>
+    <!-- Puerta 5 (abajo der) -->
+    <use href="#gate" x="700" y="683" width="28" height="20"/>
+    <text x="714" y="680" font-size="9" font-weight="700" fill="#b91c1c" text-anchor="middle">PUERTA 5</text>
+    <!-- Puerta 6 (abajo centro) -->
+    <use href="#gate" x="410" y="683" width="28" height="20"/>
+    <text x="424" y="680" font-size="9" font-weight="700" fill="#b91c1c" text-anchor="middle">PUERTA 6</text>
+    <!-- Puerta 7 (abajo izq) -->
+    <use href="#gate" x="170" y="683" width="28" height="20"/>
+    <text x="184" y="680" font-size="9" font-weight="700" fill="#b91c1c" text-anchor="middle">PUERTA 7</text>
+  </g>
+
+  <!-- Las casetas (tradicionales, no tradicionales, municipales, servicios)
+       se renderizan como marcadores de Leaflet, no como parte del SVG -->
+
+  <!-- ===== BORDE DEL RECINTO (decorativo) ===== -->
+  <rect x="0.5" y="0.5" width="1023" height="706" fill="none" stroke="#8b6f47" stroke-width="1" opacity="0.5"/>
+
 </svg>

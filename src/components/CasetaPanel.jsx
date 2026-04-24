@@ -1,11 +1,13 @@
 const TIPO_LABELS = {
+  tradicional: 'Tradicional',
+  no_tradicional: 'No tradicional',
+  municipal: 'Municipal',
+  servicio: 'Servicio',
+};
+
+const ACCESO_LABELS = {
   publica: 'Pública',
   privada: 'Privada',
-  peña: 'Peña',
-  peña_flamenca: 'Peña flamenca',
-  institucional: 'Institucional',
-  empresarial: 'Empresarial',
-  familiar: 'Familiar',
 };
 
 function getInitials(nombre) {
@@ -48,6 +50,11 @@ export default function CasetaPanel({ caseta, onClose }) {
             {caseta.tipo && (
               <span className={`panel-tipo tipo-${caseta.tipo}`}>{tipoLabel}</span>
             )}
+            {caseta.acceso && (
+              <span className={`panel-tipo acceso-${caseta.acceso}`}>
+                {ACCESO_LABELS[caseta.acceso] || caseta.acceso}
+              </span>
+            )}
           </div>
 
           <h2 className="panel-nombre">{caseta.nombre}</h2>
@@ -60,6 +67,12 @@ export default function CasetaPanel({ caseta, onClose }) {
             <div className="panel-field">
               <span className="panel-field-label">Música</span>
               <span className="panel-field-value">{caseta.musica}</span>
+            </div>
+          )}
+
+          {!caseta.posicion && (
+            <div className="panel-notice">
+              Ubicación pendiente de asignar en el plano.
             </div>
           )}
 

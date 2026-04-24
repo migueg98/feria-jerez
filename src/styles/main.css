@@ -227,50 +227,154 @@ button {
 }
 
 /* =============================================
-   MARCADORES EN EL MAPA
+   VISOR DEL PLANO (SVG con pan/zoom)
    ============================================= */
 
-.caseta-marker-wrapper {
-  background: transparent !important;
-  border: none !important;
-}
-
-.caseta-marker {
+.map-view {
   width: 100%;
   height: 100%;
-  background: var(--color-primary);
-  border: 2px solid white;
-  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  background: #f4e4c1;
+  touch-action: none;
+}
+
+/* react-zoom-pan-pinch wrapper ocupa todo el espacio disponible */
+.map-view .plano-wrapper {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.map-view .plano-content {
+  /* contenido interno con tamaño natural del plano */
+}
+
+/* Contenedor del plano: tamaño natural (1024x707), pan/zoom lo escala */
+.plano-bg {
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.plano-bg:active {
+  cursor: grabbing;
+}
+
+/* =============================================
+   CASETAS (rectángulos y círculos interactivos sobre el plano)
+   ============================================= */
+
+/* Por defecto semi-invisibles, se iluminan al seleccionar como laferiadejerez.es */
+.caseta-rect,
+.caseta-circulo {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1.5px solid rgba(139, 58, 74, 0);
+  color: transparent;
+  font-weight: 700;
+  font-size: 9px;
+  line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-weight: 700;
-  font-size: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  transition: transform 0.15s;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+    box-shadow 0.2s ease;
+  font-family: inherit;
+  overflow: visible;
+  box-sizing: border-box;
 }
 
-.caseta-marker:hover {
-  transform: scale(1.1);
+.caseta-rect { border-radius: 2px; }
+.caseta-circulo { border-radius: 50%; }
+
+.caseta-label { pointer-events: none; }
+
+.caseta-rect:hover,
+.caseta-circulo:hover {
+  background: rgba(245, 158, 11, 0.35);
+  border-color: rgba(180, 83, 9, 0.6);
+  color: #1c0f00;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25);
+  z-index: 10;
 }
 
-.caseta-marker.selected {
-  background: var(--color-accent);
-  border-color: white;
-  font-size: 12px;
-  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.3), 0 2px 8px rgba(0, 0, 0, 0.4);
-  animation: pulse 1.5s infinite;
+/* Caseta seleccionada: iluminación amarilla brillante con glow pulsante */
+.caseta-rect.selected,
+.caseta-circulo.selected {
+  background: rgba(245, 158, 11, 0.85) !important;
+  border: 2px solid #b45309 !important;
+  color: #1c0f00 !important;
+  z-index: 20;
+  animation: pulse-caseta 1.4s ease-in-out infinite;
 }
 
-@keyframes pulse {
+@keyframes pulse-caseta {
   0%, 100% {
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.3), 0 2px 8px rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 0 0 3px rgba(245, 158, 11, 0.55),
+      0 0 16px 6px rgba(245, 158, 11, 0.45),
+      0 2px 4px rgba(0, 0, 0, 0.3);
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(245, 158, 11, 0.15), 0 2px 8px rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 0 0 7px rgba(245, 158, 11, 0.25),
+      0 0 24px 10px rgba(245, 158, 11, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.3);
   }
 }
+
+/* Modo editor: casetas visibles con color según tipo para referencia */
+.app-editor .caseta-rect,
+.app-editor .caseta-circulo {
+  background: rgba(232, 155, 168, 0.25);
+  border-color: rgba(139, 58, 74, 0.6);
+  color: #3a0e16;
+}
+.app-editor .caseta-tipo-no_tradicional {
+  background: rgba(200, 168, 220, 0.25);
+  border-color: rgba(94, 62, 128, 0.6);
+  color: #2a0a45;
+}
+.app-editor .caseta-tipo-municipal {
+  background: rgba(168, 196, 232, 0.25);
+  border-color: rgba(42, 74, 128, 0.6);
+  color: #0d1b3a;
+}
+.app-editor .caseta-tipo-servicio {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: #b91c1c;
+  color: #b91c1c;
+}
+
+/* En modo editor, cuando una caseta está seleccionada permitimos drag */
+.app-editor .caseta-rect.selected,
+.app-editor .caseta-circulo.selected {
+  cursor: move;
+}
+
+/* Handles de resize (solo visibles en la caseta seleccionada del editor) */
+.caseta-handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: 2px solid #b45309;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  cursor: nwse-resize;
+  z-index: 30;
+  touch-action: none;
+}
+
+.caseta-handle-nw { top: -6px; left: -6px; cursor: nwse-resize; }
+.caseta-handle-ne { top: -6px; right: -6px; cursor: nesw-resize; }
+.caseta-handle-sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
+.caseta-handle-se { bottom: -6px; right: -6px; cursor: nwse-resize; }
+.caseta-handle-e { top: 50%; right: -6px; transform: translateY(-50%); cursor: ew-resize; }
 
 /* =============================================
    PANEL DE CASETA (info al hacer clic)
@@ -418,6 +522,16 @@ button {
   color: var(--color-text);
 }
 
+.panel-notice {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: #fef3c7;
+  border-left: 3px solid #f59e0b;
+  color: #78350f;
+  font-size: 13px;
+  border-radius: 4px;
+}
+
 .panel-actions {
   margin-top: 20px;
   display: flex;
@@ -455,32 +569,442 @@ button {
    BADGES DE TIPO (colores por categoría)
    ============================================= */
 
-.tipo-publica { background: #dcfce7; color: #166534; }
-.tipo-privada { background: #fee2e2; color: #991b1b; }
-.tipo-peña { background: #fef3c7; color: #854d0e; }
-.tipo-peña_flamenca { background: #fef3c7; color: #854d0e; }
-.tipo-institucional { background: #dbeafe; color: #1e40af; }
-.tipo-empresarial { background: #f3e8ff; color: #6b21a8; }
-.tipo-familiar { background: #ffedd5; color: #9a3412; }
+.tipo-tradicional { background: #fef3c7; color: #854d0e; }
+.tipo-no_tradicional { background: #f3e8ff; color: #6b21a8; }
+.tipo-municipal { background: #dbeafe; color: #1e40af; }
+.tipo-servicio { background: #fee2e2; color: #991b1b; }
+
+/* Reemplazar el texto del badge "no_tradicional" para que muestre un espacio */
+.tipo-no_tradicional { text-transform: none; }
+
+/* Badges de acceso público/privado */
+.acceso-publica { background: #dcfce7; color: #166534; }
+.acceso-privada { background: #fce7f3; color: #9d174d; }
 
 /* =============================================
    MODO EDITOR (solo con ?editor=1 en la URL)
    ============================================= */
 
-.editor-banner {
+.editor-panel {
   position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
+  right: 0;
+  top: 112px;
+  bottom: 0;
+  width: 340px;
+  background: white;
+  border-left: 2px solid #f59e0b;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  z-index: 1200;
+  font-size: 13px;
+}
+
+.editor-header {
+  background: #f59e0b;
+  color: #1c0f00;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.editor-progress {
+  font-weight: 600;
+}
+
+.editor-current {
+  padding: 12px 14px;
+  padding-right: 34px;
+  background: #fef3c7;
+  border-bottom: 1px solid #fcd34d;
+  position: relative;
+}
+
+.editor-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(180, 83, 9, 0.12);
+  border: none;
+  color: #78350f;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.editor-close:hover {
+  background: rgba(180, 83, 9, 0.25);
+  color: #3a1506;
+}
+
+.editor-current-label {
+  font-size: 11px;
+  color: #78350f;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.editor-current-name {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 600;
+  color: #1c0f00;
+}
+
+.editor-current-num {
+  background: #b45309;
   color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.editor-current-empty {
+  color: #78350f;
+  font-style: italic;
+}
+
+.editor-tip {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #78350f;
+}
+
+.editor-tip-ok {
+  color: #166534;
+}
+
+.editor-tip-locked {
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.editor-last {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #166534;
+}
+
+/* Formulario de edición de campos de la caseta */
+.caseta-form {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fafaf9;
+}
+
+.form-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.form-field > span {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  background: white;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 48px;
+  font-family: inherit;
+}
+
+.form-field-sm {
+  flex: 0 0 72px;
+}
+
+.editor-row-actions {
+  padding: 8px 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.editor-row-actions .btn-secondary {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 12px;
+  background: #f3f4f6;
+  color: #111827;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.editor-row-actions .btn-secondary:hover { background: #e5e7eb; }
+
+.editor-row-actions .btn-lock,
+.editor-row-actions .btn-unlock {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.editor-row-actions .btn-lock {
+  background: #16a34a;
+  color: white;
+}
+.editor-row-actions .btn-lock:hover { background: #15803d; }
+
+.editor-row-actions .btn-unlock {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fbbf24;
+}
+.editor-row-actions .btn-unlock:hover { background: #fde68a; }
+
+/* Candado sobre la caseta bloqueada */
+.caseta-lock-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 11px;
+  line-height: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+}
+
+.editor-note {
+  padding: 8px 14px;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  font-size: 11px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.editor-note code {
+  background: #e5e7eb;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+.editor-controls {
+  padding: 10px 14px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editor-filter {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+  font-family: inherit;
+}
+
+.editor-filter:focus {
+  border-color: #f59e0b;
+}
+
+.editor-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.editor-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  flex: 1;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.editor-item {
+  width: 100%;
+  padding: 8px 14px;
+  background: white;
+  border: none;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: 13px;
+  color: #111827;
+  transition: background 0.15s;
+}
+
+.editor-item:hover {
+  background: #fef3c7;
+}
+
+.editor-item.active {
+  background: #f59e0b;
+  color: white;
+}
+.editor-item.active .editor-item-num {
+  background: white;
+  color: #b45309;
+}
+
+.editor-item.done {
+  opacity: 0.55;
+}
+
+.editor-item-num {
+  background: #6b7280;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 32px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.editor-item-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editor-item-check {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.editor-empty {
+  padding: 16px;
+  color: #6b7280;
+  font-style: italic;
+  text-align: center;
+}
+
+.editor-actions {
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: #f9fafb;
+}
+
+.editor-actions .btn {
+  flex: 1;
+  padding: 8px 10px;
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.5px;
-  z-index: 1200;
-  pointer-events: none;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.editor-actions .btn-primary {
+  background: #16a34a;
+  color: white;
+}
+.editor-actions .btn-primary:hover { background: #15803d; }
+
+.editor-actions .btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+.editor-actions .btn-secondary:hover { background: #d1d5db; }
+.editor-actions .btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.editor-actions .btn-danger {
+  background: transparent;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+.editor-actions .btn-danger:hover { background: #fee2e2; }
+
+/* En modo editor, dejar hueco para el panel lateral en desktop */
+@media (min-width: 768px) {
+  .app-editor .app-map {
+    margin-right: 340px;
+  }
+}
+
+/* En móvil, el panel editor ocupa la mitad inferior */
+@media (max-width: 767px) {
+  .editor-panel {
+    top: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 45vh;
+    border-left: none;
+    border-top: 2px solid #f59e0b;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
+  }
+  .app-editor .app-map {
+    height: calc(100% - 45vh);
+  }
 }
 
 /* =============================================
@@ -512,13 +1036,36 @@ button {
 }
 
 /* =============================================
-   OVERRIDES DE LEAFLET (quitar estilos feos)
+   BOTONES DE ZOOM FLOTANTES (opcional, sobre el plano)
    ============================================= */
 
-.leaflet-container {
-  font-family: inherit !important;
+.zoom-controls {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 50;
 }
 
-.leaflet-control-zoom a {
-  color: var(--color-text) !important;
+.zoom-controls button {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.zoom-controls button:hover {
+  background: #f9fafb;
 }

@@ -43,7 +43,7 @@ export default function SearchBar({ value, onChange, results, onSelect }) {
       {showResults && (
         <ul className="search-results">
           {results.length === 0 ? (
-            <li className="search-empty">Sin resultados</li>
+            <li className="search-empty">No hay ninguna caseta con ese nombre</li>
           ) : (
             results.slice(0, 10).map((c) => (
               <li key={c.id}>

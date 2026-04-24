@@ -1,152 +1,1772 @@
 [
   {
     "id": 1,
-    "numero": "001",
-    "nombre": "Caseta Los Amigos",
-    "tipo": "publica",
-    "descripcion": "Caseta familiar, ambiente tranquilo.",
-    "musica": "Sevillanas y pop español",
+    "numero": "1",
+    "nombre": "La Casapuerta",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 150, "y": 125 }
+    "posicion": {
+      "x": 1059,
+      "y": 164
+    },
+    "forma": "rect",
+    "tamano": {
+      "ancho": 76,
+      "alto": 60
+    },
+    "acceso": "publica",
+    "locked": true
   },
   {
     "id": 2,
-    "numero": "002",
-    "nombre": "Caseta El Rebujito",
-    "tipo": "publica",
-    "descripcion": "Rebujito especial y tapas caseras.",
-    "musica": "Sevillanas clásicas",
+    "numero": "2",
+    "nombre": "Tío José de Paula",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 370, "y": 125 }
+    "posicion": null
   },
   {
     "id": 3,
-    "numero": "003",
-    "nombre": "Peña Flamenca Jerezana",
-    "tipo": "peña",
-    "descripcion": "Peña con actuaciones de cante en vivo.",
-    "musica": "Flamenco puro",
+    "numero": "3",
+    "nombre": "Los Cabales",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 590, "y": 125 }
+    "posicion": null
   },
   {
     "id": 4,
-    "numero": "004",
-    "nombre": "Caseta Ayuntamiento",
-    "tipo": "institucional",
-    "descripcion": "Caseta municipal, abierta al público.",
-    "musica": "Variada",
+    "numero": "4",
+    "nombre": "La Crujía",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 830, "y": 125 }
+    "posicion": null
   },
   {
     "id": 5,
-    "numero": "015",
-    "nombre": "Caseta La Alegría",
-    "tipo": "publica",
-    "descripcion": "Una de las más animadas del recinto.",
-    "musica": "Sevillanas y reguetón",
+    "numero": "5",
+    "nombre": "Amigos del Patio",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 150, "y": 265 }
+    "posicion": null
   },
   {
     "id": 6,
-    "numero": "022",
-    "nombre": "Caseta Hermandad del Rocío",
-    "tipo": "peña",
-    "descripcion": "Ambiente rociero tradicional.",
-    "musica": "Sevillanas rocieras",
+    "numero": "6",
+    "nombre": "La Catorce",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 370, "y": 265 }
+    "posicion": null
   },
   {
     "id": 7,
-    "numero": "030",
-    "nombre": "Caseta El Caballo",
-    "tipo": "publica",
-    "descripcion": "Decoración ecuestre. Buenas tapas.",
-    "musica": "Pop y sevillanas",
+    "numero": "7",
+    "nombre": "Nazarenos",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 590, "y": 265 }
+    "posicion": null
   },
   {
     "id": 8,
-    "numero": "045",
-    "nombre": "Caseta Diputación",
-    "tipo": "institucional",
-    "descripcion": "Caseta oficial de la Diputación de Cádiz.",
-    "musica": "Variada",
+    "numero": "8",
+    "nombre": "Amigos en Jerez",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 830, "y": 265 }
+    "posicion": null
   },
   {
     "id": 9,
-    "numero": "052",
-    "nombre": "Caseta La Garrocha",
-    "tipo": "privada",
-    "descripcion": "Caseta de socios.",
-    "musica": "Sevillanas",
+    "numero": "9",
+    "nombre": "Entre Amigos",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 150, "y": 405 }
+    "posicion": null
   },
   {
     "id": 10,
-    "numero": "060",
-    "nombre": "Caseta El Albero",
-    "tipo": "publica",
-    "descripcion": "Ambiente joven y música actual.",
-    "musica": "Pop, reguetón, flamenco fusión",
+    "numero": "10",
+    "nombre": "La Penúltima",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 370, "y": 405 }
+    "posicion": null
   },
   {
     "id": 11,
-    "numero": "068",
-    "nombre": "Caseta Los Claveles",
-    "tipo": "publica",
-    "descripcion": "Clásica y acogedora.",
-    "musica": "Sevillanas y copla",
+    "numero": "11",
+    "nombre": "González Byass",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 590, "y": 405 }
+    "posicion": null
   },
   {
     "id": 12,
-    "numero": "075",
-    "nombre": "Caseta Jerez Centro",
-    "tipo": "empresarial",
-    "descripcion": "Patrocinada por comerciantes del centro.",
-    "musica": "Sevillanas y pop",
+    "numero": "12",
+    "nombre": "Amigos del Canasta",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 830, "y": 405 }
+    "posicion": null
   },
   {
     "id": 13,
-    "numero": "082",
-    "nombre": "Caseta La Feria",
-    "tipo": "publica",
-    "descripcion": "Caseta tradicional jerezana.",
-    "musica": "Flamenco y sevillanas",
+    "numero": "13",
+    "nombre": "Peña Amigos del Cañizo",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 150, "y": 545 }
+    "posicion": null
   },
   {
     "id": 14,
-    "numero": "090",
-    "nombre": "Caseta El Tío Pepe",
-    "tipo": "empresarial",
-    "descripcion": "Bodegas González Byass. Degustación de vinos.",
-    "musica": "Ambiente tranquilo, música en vivo",
+    "numero": "14",
+    "nombre": "Peña Los 20",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 370, "y": 545 }
+    "posicion": null
   },
   {
     "id": 15,
-    "numero": "098",
-    "nombre": "Caseta La Yegua",
-    "tipo": "privada",
-    "descripcion": "Caseta de invitación.",
-    "musica": "Sevillanas",
+    "numero": "15",
+    "nombre": "La Borriquita",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
     "foto": null,
-    "posicion": { "x": 590, "y": 545 }
+    "posicion": null
+  },
+  {
+    "id": 16,
+    "numero": "16",
+    "nombre": "Las Duelas",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 17,
+    "numero": "17",
+    "nombre": "La Térnica",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 18,
+    "numero": "18",
+    "nombre": "Borboreo",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 19,
+    "numero": "19",
+    "nombre": "Diario de Jerez",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 20,
+    "numero": "20",
+    "nombre": "Las Angustias",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 21,
+    "numero": "21",
+    "nombre": "El Seis Doble",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 22,
+    "numero": "22",
+    "nombre": "La Nuestra",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 23,
+    "numero": "23",
+    "nombre": "El Trasiego",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 24,
+    "numero": "24",
+    "nombre": "Vara y Pulgar",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 25,
+    "numero": "25",
+    "nombre": "Peña Rociera Los Romeritos",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 26,
+    "numero": "26",
+    "nombre": "Del Amor",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 27,
+    "numero": "27",
+    "nombre": "Enjalma – La Papa Aliña",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 28,
+    "numero": "28",
+    "nombre": "Entre Olivos",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 29,
+    "numero": "29",
+    "nombre": "El Carril",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 30,
+    "numero": "30",
+    "nombre": "Judíos San Mateos",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 31,
+    "numero": "31",
+    "nombre": "Peña Los 100",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 32,
+    "numero": "32",
+    "nombre": "Canal Sur",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 33,
+    "numero": "33",
+    "nombre": "Los Caireles",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 34,
+    "numero": "34",
+    "nombre": "La Soledad",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 35,
+    "numero": "35",
+    "nombre": "Camino del Rocío",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 36,
+    "numero": "36",
+    "nombre": "Bodegas Fundador",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 37,
+    "numero": "37",
+    "nombre": "Radio Jerez",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 38,
+    "numero": "38",
+    "nombre": "Amigos de la Yeguada",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 39,
+    "numero": "39",
+    "nombre": "El Farol",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 40,
+    "numero": "40",
+    "nombre": "Al Relente",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 41,
+    "numero": "41",
+    "nombre": "La Candelaria",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 42,
+    "numero": "42",
+    "nombre": "La Yedra",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 43,
+    "numero": "43",
+    "nombre": "Hdad. del Transporte",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 44,
+    "numero": "44",
+    "nombre": "Cristo de la Expiración",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 45,
+    "numero": "45",
+    "nombre": "La Reunión",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 46,
+    "numero": "46",
+    "nombre": "La Gañanía",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 47,
+    "numero": "47",
+    "nombre": "Círculo de Labradores",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 48,
+    "numero": "48",
+    "nombre": "Cristo de la Viga",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 49,
+    "numero": "49",
+    "nombre": "Velo en Flor",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 50,
+    "numero": "50",
+    "nombre": "Afanas",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 51,
+    "numero": "51",
+    "nombre": "Casino Nacional",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 52,
+    "numero": "52",
+    "nombre": "El Enganche",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 53,
+    "numero": "53",
+    "nombre": "Cascabeles",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 54,
+    "numero": "54",
+    "nombre": "Peña La Bulería",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 55,
+    "numero": "55",
+    "nombre": "Real Círculo Lebrero",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 56,
+    "numero": "56",
+    "nombre": "Vinolento",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 57,
+    "numero": "57",
+    "nombre": "La Cantarera",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 58,
+    "numero": "58",
+    "nombre": "Alboroto",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 59,
+    "numero": "59",
+    "nombre": "ASAJA",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 60,
+    "numero": "60",
+    "nombre": "Casino Jerezano",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 61,
+    "numero": "61",
+    "nombre": "Asociación Sagrada Familia",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 62,
+    "numero": "62",
+    "nombre": "Hermandad del Rocío",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 63,
+    "numero": "63",
+    "nombre": "Los Pollitos",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 64,
+    "numero": "64",
+    "nombre": "La Tula (Fundación Alalá)",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 65,
+    "numero": "65",
+    "nombre": "El Colegio de Abogados",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 66,
+    "numero": "66",
+    "nombre": "Cayetano del Pino",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 67,
+    "numero": "67",
+    "nombre": "La Octtava Flamenkura",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 68,
+    "numero": "68",
+    "nombre": "Sociedad Jerezana del Vino",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 69,
+    "numero": "69",
+    "nombre": "Medio Tapón",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 70,
+    "numero": "70",
+    "nombre": "La Veracruz",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 71,
+    "numero": "71",
+    "nombre": "La Primera",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 72,
+    "numero": "72",
+    "nombre": "Casa de Extremadura",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 73,
+    "numero": "73",
+    "nombre": "Los Ligones",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 74,
+    "numero": "74",
+    "nombre": "Bondad y Misericordia",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 75,
+    "numero": "75",
+    "nombre": "Los Cernícalos",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 76,
+    "numero": "76",
+    "nombre": "La Bota de Roble",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 77,
+    "numero": "77",
+    "nombre": "Buena Gente",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 78,
+    "numero": "78",
+    "nombre": "La Amargura",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 79,
+    "numero": "79",
+    "nombre": "Palique",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 80,
+    "numero": "80",
+    "nombre": "P.S.O.E.",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 82,
+    "numero": "82",
+    "nombre": "A Tu Vera",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 83,
+    "numero": "83",
+    "nombre": "La Manuela",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 84,
+    "numero": "84",
+    "nombre": "Entre Copas",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 85,
+    "numero": "85",
+    "nombre": "VORS",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 86,
+    "numero": "86",
+    "nombre": "Gloria Bendita",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 87,
+    "numero": "87",
+    "nombre": "Caballo de Copas",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 88,
+    "numero": "88",
+    "nombre": "Tertulia Palo Cortao",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 89,
+    "numero": "89",
+    "nombre": "Bidafarma",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 90,
+    "numero": "90",
+    "nombre": "COAG Cádiz",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 91,
+    "numero": "91",
+    "nombre": "Rincón Cherokee",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 92,
+    "numero": "92",
+    "nombre": "Los Expertos",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 93,
+    "numero": "93",
+    "nombre": "La Popular",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 94,
+    "numero": "94",
+    "nombre": "La Voz del Sur",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 95,
+    "numero": "95",
+    "nombre": "Los Andaluces",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 96,
+    "numero": "96",
+    "nombre": "Club Nazaret",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 97,
+    "numero": "97",
+    "nombre": "La de en Medio",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 98,
+    "numero": "98",
+    "nombre": "Consuelo del Pelirón",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 99,
+    "numero": "99",
+    "nombre": "7 Días en la Gloria",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 100,
+    "numero": "100",
+    "nombre": "Redención Salesiana",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 101,
+    "numero": "101",
+    "nombre": "Peña Santa María",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 102,
+    "numero": "102",
+    "nombre": "Asoleo",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 104,
+    "numero": "104",
+    "nombre": "Covijerez",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 105,
+    "numero": "105",
+    "nombre": "La Clemencia",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 106,
+    "numero": "106",
+    "nombre": "Gaboral",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 107,
+    "numero": "107",
+    "nombre": "La Tertulia",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 108,
+    "numero": "108",
+    "nombre": "Treinta y Tantos",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 109,
+    "numero": "109",
+    "nombre": "Usted Perdone",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 110,
+    "numero": "110",
+    "nombre": "El Tablao",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 111,
+    "numero": "111",
+    "nombre": "Carrefour",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 112,
+    "numero": "112",
+    "nombre": "C.G.T. (Rincón Libertario)",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 113,
+    "numero": "113",
+    "nombre": "La Lanzada",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 114,
+    "numero": "114",
+    "nombre": "Hermandad Nuestro Padre Jesús de la Salud",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 115,
+    "numero": "115",
+    "nombre": "El Cuadro",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 116,
+    "numero": "116",
+    "nombre": "Qué Poderío",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 117,
+    "numero": "117",
+    "nombre": "Del Tabanco a la Feria",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 118,
+    "numero": "118",
+    "nombre": "Caseta La Juntera",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 119,
+    "numero": "119",
+    "nombre": "Balari y Amigos",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 120,
+    "numero": "120",
+    "nombre": "Viloita y Guillén",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 121,
+    "numero": "121",
+    "nombre": "Xerez Deportivo Fútbol Club",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 122,
+    "numero": "122",
+    "nombre": "Josefrans",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 123,
+    "numero": "123",
+    "nombre": "María Auxiliadora Montealto",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 124,
+    "numero": "124",
+    "nombre": "El Mira",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 125,
+    "numero": "125",
+    "nombre": "Media Potencia",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 126,
+    "numero": "126",
+    "nombre": "Mi Caballo con Glamour",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 127,
+    "numero": "127",
+    "nombre": "Hermandad de la Entrega",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 128,
+    "numero": "128",
+    "nombre": "C.D. Comarca de Jerez - Estella",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 129,
+    "numero": "129",
+    "nombre": "Destino Jerez",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 130,
+    "numero": "130",
+    "nombre": "Caseta Accesibilidad",
+    "tipo": "municipal",
+    "descripcion": "Caseta municipal de accesibilidad.",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 131,
+    "numero": "131",
+    "nombre": "Tía Majuma",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 132,
+    "numero": "132",
+    "nombre": "Gemelas al Jerez",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 133,
+    "numero": "133",
+    "nombre": "El Ermitaño de Paco",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 134,
+    "numero": "134",
+    "nombre": "Templete Municipal",
+    "tipo": "municipal",
+    "descripcion": "Templete Municipal de la Feria.",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 135,
+    "numero": "135",
+    "nombre": "U.G.T. (Casa del Pueblo)",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 136,
+    "numero": "136",
+    "nombre": "Producciones del Motor",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 137,
+    "numero": "137",
+    "nombre": "La Albarizuela",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 138,
+    "numero": "138",
+    "nombre": "La Farándula",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 139,
+    "numero": "139",
+    "nombre": "Fueron 24",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 140,
+    "numero": "140",
+    "nombre": "Los Mayores (Caseta del Mayor)",
+    "tipo": "municipal",
+    "descripcion": "Caseta municipal del Mayor.",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 141,
+    "numero": "141",
+    "nombre": "Upacesur",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 142,
+    "numero": "142",
+    "nombre": "Miguel de los Mayores",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 143,
+    "numero": "143",
+    "nombre": "7 del 7",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 144,
+    "numero": "144",
+    "nombre": "Jerelesgay",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 145,
+    "numero": "145",
+    "nombre": "La Dolores",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 146,
+    "numero": "146",
+    "nombre": "C.C.O.O.",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 147,
+    "numero": "147",
+    "nombre": "Hermandad Cristo de la Sed",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 148,
+    "numero": "148",
+    "nombre": "Sabor Tropical",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 149,
+    "numero": "149",
+    "nombre": "Makande",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 150,
+    "numero": "150",
+    "nombre": "La Julieta",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 151,
+    "numero": "151",
+    "nombre": "Pandora Club Jerez",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 152,
+    "numero": "152",
+    "nombre": "Azúcar y Limón",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 153,
+    "numero": "153",
+    "nombre": "La Lolita",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 154,
+    "numero": "154",
+    "nombre": "Cache",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 155,
+    "numero": "155",
+    "nombre": "Mamajuana",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 156,
+    "numero": "156",
+    "nombre": "El Abrevadero",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 157,
+    "numero": "157",
+    "nombre": "El Surtidor",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 158,
+    "numero": "158",
+    "nombre": "Frida",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 159,
+    "numero": "159",
+    "nombre": "Hermandad de Pasión",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 160,
+    "numero": "160",
+    "nombre": "Onda Jerez",
+    "tipo": "municipal",
+    "descripcion": "Caseta municipal de Onda Jerez.",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 161,
+    "numero": "161",
+    "nombre": "Casa Juan Carlos",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 162,
+    "numero": "162",
+    "nombre": "Ateneo de Jerez - Puerta Abierta",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 163,
+    "numero": "163",
+    "nombre": "Papanata",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 164,
+    "numero": "164",
+    "nombre": "Peña Los 13",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 165,
+    "numero": "165",
+    "nombre": "Pozo de la Víbora",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 166,
+    "numero": "166",
+    "nombre": "Hermandad de la Misión",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 167,
+    "numero": "167",
+    "nombre": "Las Viñas",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 168,
+    "numero": "168",
+    "nombre": "Prendimiento",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 169,
+    "numero": "169",
+    "nombre": "Hermandad La Paz de Fátima",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 170,
+    "numero": "170",
+    "nombre": "AGDEM",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 171,
+    "numero": "171",
+    "nombre": "Hdad. La Salvación",
+    "tipo": "tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 172,
+    "numero": "172",
+    "nombre": "La Flamenca",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 173,
+    "numero": "173",
+    "nombre": "Mesón El Cartujano",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 174,
+    "numero": "174",
+    "nombre": "La Tuya",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 175,
+    "numero": "175",
+    "nombre": "Soberano Poder",
+    "tipo": "no_tradicional",
+    "descripcion": "",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 176,
+    "numero": "176",
+    "nombre": "Policía Local - Policía Nacional",
+    "tipo": "servicio",
+    "descripcion": "Puesto de Policía Local y Nacional dentro del recinto.",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 177,
+    "numero": "177",
+    "nombre": "Servicios Sanitarios",
+    "tipo": "servicio",
+    "descripcion": "Atención sanitaria dentro del recinto.",
+    "musica": "",
+    "foto": null,
+    "posicion": null
+  },
+  {
+    "id": 178,
+    "numero": "178",
+    "nombre": "Protección Civil - Bomberos",
+    "tipo": "servicio",
+    "descripcion": "Puesto de Protección Civil y Bomberos.",
+    "musica": "",
+    "foto": null,
+    "posicion": null
   }
 ]
