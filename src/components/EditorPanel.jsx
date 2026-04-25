@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import FotoUploader from './FotoUploader.jsx';
+import ActuacionesEditor from './ActuacionesEditor.jsx';
 import { TAG_GROUPS, normalizeComidaValue } from '../data/tagsConfig.js';
 
 const FORMAS = [
@@ -90,7 +91,14 @@ function TagsEditor({ caseta, onFieldChange }) {
   );
 }
 
-function CasetaForm({ caseta, onFieldChange }) {
+function CasetaForm({
+  caseta,
+  onFieldChange,
+  actuaciones,
+  onAddActuacion,
+  onUpdateActuacion,
+  onDeleteActuacion,
+}) {
   if (!caseta) return null;
 
   const forma = caseta.forma || 'rect';
@@ -137,6 +145,16 @@ function CasetaForm({ caseta, onFieldChange }) {
       <AccesoEditor caseta={caseta} onFieldChange={onFieldChange} />
 
       <TagsEditor caseta={caseta} onFieldChange={onFieldChange} />
+
+      {onAddActuacion && (
+        <ActuacionesEditor
+          casetaId={caseta.id}
+          actuaciones={actuaciones || []}
+          onAdd={onAddActuacion}
+          onUpdate={onUpdateActuacion}
+          onDelete={onDeleteActuacion}
+        />
+      )}
 
       {locked && (
         <div className="form-locked-note">
@@ -270,6 +288,10 @@ export default function EditorPanel({
   isNarrow = false,
   sheetExpanded = true,
   onSheetExpandedChange,
+  actuaciones = [],
+  onAddActuacion,
+  onUpdateActuacion,
+  onDeleteActuacion,
 }) {
   const sheetDragRef = useRef(null);
   const [sheetDragOffset, setSheetDragOffset] = useState(0);
@@ -459,7 +481,14 @@ export default function EditorPanel({
             </div>
 
             {isPlaced && (
-              <CasetaForm caseta={selected} onFieldChange={onFieldChange} />
+              <CasetaForm
+                caseta={selected}
+                onFieldChange={onFieldChange}
+                actuaciones={actuaciones}
+                onAddActuacion={onAddActuacion}
+                onUpdateActuacion={onUpdateActuacion}
+                onDeleteActuacion={onDeleteActuacion}
+              />
             )}
 
             {isPlaced && (

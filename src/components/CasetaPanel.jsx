@@ -26,6 +26,7 @@ function getInitials(nombre) {
 
 export default function CasetaPanel({
   caseta,
+  actuaciones = [],
   expanded,
   onToggleExpanded,
   onCollapse,
@@ -35,6 +36,8 @@ export default function CasetaPanel({
   const [dragOffset, setDragOffset] = useState(0);
   const [lightboxSrc, setLightboxSrc] = useState(null);
   const [shareToast, setShareToast] = useState(null);
+  const [tab, setTab] = useState('info');
+  const [openActuacionId, setOpenActuacionId] = useState(null);
 
   const handleShare = async (e) => {
     e.stopPropagation();
@@ -221,31 +224,69 @@ export default function CasetaPanel({
                 </div>
               )}
 
-              {caseta.descripcion && (
-                <p className="panel-descripcion">{caseta.descripcion}</p>
+              <div className="panel-tabs" role="tablist">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === 'info'}
+                  className={`panel-tab ${tab === 'info' ? 'is-active' : ''}`}
+                  onClick={() => setTab('info')}
+                >
+                  Información
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === 'actuaciones'}
+                  className={`panel-tab ${tab === 'actuaciones' ? 'is-active' : ''}`}
+                  onClick={() => setTab('actuaciones')}
+                >
+                  Actuaciones
+                  {actuaciones.length > 0 && (
+                    <span className="panel-tab-count">{actuaciones.length}</span>
+                  )}
+                </button>
+              </div>
+
+              {tab === 'info' && (
+                <>
+                  {caseta.descripcion && (
+                    <p className="panel-descripcion">{caseta.descripcion}</p>
+                  )}
+
+                  {caseta.foto_menu && (
+                    <div className="panel-section">
+                      <h3 className="panel-section-title">Menú</h3>
+                      <button
+                        type="button"
+                        className="panel-menu-thumb"
+                        onClick={() => setLightboxSrc(caseta.foto_menu)}
+                        aria-label="Ver menú en grande"
+                      >
+                        <img src={caseta.foto_menu} alt="Menú" />
+                        <span className="panel-menu-zoom">🔍</span>
+                      </button>
+                    </div>
+                  )}
+
+                  {!caseta.posicion && (
+                    <div className="panel-notice">
+                      Ubicación pendiente de asignar en el plano.
+                    </div>
+                  )}
+                </>
               )}
 
-              {caseta.foto_menu && (
-                <div className="panel-section">
-                  <h3 className="panel-section-title">Menú</h3>
-                  <button
-                    type="button"
-                    className="panel-menu-thumb"
-                    onClick={() => setLightboxSrc(caseta.foto_menu)}
-                    aria-label="Ver menú en grande"
-                  >
-                    <img src={caseta.foto_menu} alt="Menú" />
-                    <span className="panel-menu-zoom">🔍</span>
-                  </button>
-                </div>
+              {tab === 'actuaciones' && (
+                <CasetaActuaciones
+                  actuaciones={actuaciones}
+                  openId={openActuacionId}
+                  onToggle={(id) =>
+                    setOpenActuacionId((cur) => (cur === id ? null : id))
+                  }
+                  onCartelClick={(url) => setLightboxSrc(url)}
+                />
               )}
-
-              {!caseta.posicion && (
-                <div className="panel-notice">
-                  Ubicación pendiente de asignar en el plano.
-                </div>
-              )}
-
             </div>
           </div>
         )}
@@ -260,5 +301,112 @@ export default function CasetaPanel({
         />
       )}
     </>
+  );
+}
+
+function CasetaActuaciones({ actuaciones, openId, onToggle, onCartelClick }) {
+  if (!actuaciones || actuaciones.length === 0) {
+    return (
+      <div className="panel-actuaciones-empty">
+        Esta caseta aún no ha publicado actuaciones.
+      </div>
+    );
+  }
+
+  // Próximas primero, pasadas al final.
+  const now = Date.now();
+  const sorted = [...actuaciones].sort((a, b) => {
+    const ta = new Date(a.inicio).getTime();
+    const tb = new Date(b.inicio).getTime();
+    const aPast = ta < now ? 1 : 0;
+    const bPast = tb < now ? 1 : 0;
+    if (aPast !== bPast) return aPast - bPast; // próximas primero
+    return ta - tb;
+  });
+
+  return (
+    <div className="panel-actuaciones">
+      {sorted.map((act) => {
+        const inicio = new Date(act.inicio);
+        const fin = act.fin ? new Date(act.fin) : null;
+        const finished = (fin ? fin.getTime() : inicio.getTime()) < now;
+        const live =
+          !finished &&
+          inicio.getTime() <= now &&
+          (fin ? fin.getTime() >= now : true);
+        const isOpen = openId === act.id;
+
+        const fmt = (d) =>
+          d.toLocaleString('es-ES', {
+            weekday: 'short',
+            day: '2-digit',
+            month: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+          });
+
+        return (
+          <div
+            key={act.id}
+            className={`panel-actuacion ${finished ? 'is-past' : ''} ${live ? 'is-live' : ''}`}
+          >
+            <button
+              type="button"
+              className="panel-actuacion-head"
+              onClick={() => onToggle?.(act.id)}
+              aria-expanded={isOpen}
+            >
+              <div className="panel-actuacion-time">
+                <strong>
+                  {inicio.toLocaleTimeString('es-ES', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </strong>
+                <span className="muted">
+                  {inicio.toLocaleDateString('es-ES', {
+                    weekday: 'short',
+                    day: '2-digit',
+                    month: '2-digit',
+                  })}
+                </span>
+              </div>
+              <div className="panel-actuacion-title">{act.titulo}</div>
+              <div className="panel-actuacion-status">
+                {live && <span className="badge badge-live">En curso</span>}
+                {finished && <span className="badge badge-past">Finalizado</span>}
+                <span className="panel-actuacion-chev" aria-hidden>
+                  {isOpen ? '▾' : '▸'}
+                </span>
+              </div>
+            </button>
+
+            {isOpen && (
+              <div className="panel-actuacion-body">
+                {act.cartel && (
+                  <button
+                    type="button"
+                    className="panel-actuacion-cartel"
+                    onClick={() => onCartelClick?.(act.cartel)}
+                    aria-label="Ampliar cartel"
+                  >
+                    <img src={act.cartel} alt={`Cartel de ${act.titulo}`} />
+                  </button>
+                )}
+                <div className="panel-actuacion-meta">
+                  <span>
+                    {fmt(inicio)}
+                    {fin && ` – ${fin.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`}
+                  </span>
+                </div>
+                {act.descripcion && (
+                  <p className="panel-actuacion-desc">{act.descripcion}</p>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
   );
 }

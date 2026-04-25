@@ -57,6 +57,39 @@ export async function uploadFoto(file, casetaId, tipo, oldUrl) {
 }
 
 /**
+ * Sube el cartel de una actuación al bucket de fotos. Mismo flujo que
+ * `uploadFoto` pero con prefijo `actuaciones/{actuacionId}/cartel-...`.
+ *
+ * @param {File}   file
+ * @param {string} actuacionId  UUID de la actuación (puede generarse antes)
+ * @param {string?} oldUrl
+ * @returns {Promise<string>}   URL pública
+ */
+export async function uploadCartel(file, actuacionId, oldUrl) {
+  if (!file) throw new Error('No file provided');
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+  const path = `actuaciones/${actuacionId}/cartel-${Date.now()}.${ext}`;
+
+  const { error } = await supabase.storage
+    .from(FOTOS_BUCKET)
+    .upload(path, file, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: file.type || `image/${ext}`,
+    });
+  if (error) throw error;
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from(FOTOS_BUCKET).getPublicUrl(path);
+
+  if (oldUrl) {
+    deleteFoto(oldUrl).catch(() => {});
+  }
+  return publicUrl;
+}
+
+/**
  * Borra una foto a partir de su URL pública.
  */
 export async function deleteFoto(publicUrl) {

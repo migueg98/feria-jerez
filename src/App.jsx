@@ -3,8 +3,11 @@ import MapView from './components/MapView.jsx';
 import SearchBar from './components/SearchBar.jsx';
 import CasetaPanel from './components/CasetaPanel.jsx';
 import EditorPanel from './components/EditorPanel.jsx';
+import CalendarFab from './components/CalendarFab.jsx';
+import CalendarSheet from './components/CalendarSheet.jsx';
 import casetasSeed from './data/casetas.json';
 import { useCasetasSync } from './hooks/useCasetasSync.js';
+import { useActuacionesSync } from './hooks/useActuacionesSync.js';
 
 function normalize(text) {
   return (text || '')
@@ -51,6 +54,16 @@ export default function App() {
   // Sincronización con Supabase (lectura + realtime + writes optimistas)
   const { casetas, status, updateCaseta, resetCaseta, stats } =
     useCasetasSync(casetasSeed);
+
+  // Actuaciones (eventos / cartel)
+  const {
+    actuaciones,
+    addActuacion,
+    updateActuacion,
+    deleteActuacion,
+  } = useActuacionesSync();
+
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   // Modo editor: ?editor=1 en la URL
   const editorMode = useMemo(() => {
@@ -257,6 +270,7 @@ export default function App() {
       {!editorMode && selectedCaseta && (
         <CasetaPanel
           caseta={selectedCaseta}
+          actuaciones={actuaciones.filter((a) => a.caseta_id === selectedCaseta.id)}
           expanded={panelExpanded}
           onToggleExpanded={() => setPanelExpanded((v) => !v)}
           onCollapse={() => setPanelExpanded(false)}
@@ -282,8 +296,30 @@ export default function App() {
           isNarrow={isEditorNarrow}
           sheetExpanded={isEditorNarrow ? editorSheetExpanded : true}
           onSheetExpandedChange={setEditorSheetExpanded}
+          actuaciones={actuaciones}
+          onAddActuacion={addActuacion}
+          onUpdateActuacion={updateActuacion}
+          onDeleteActuacion={deleteActuacion}
         />
       )}
+
+      {!editorMode && (
+        <CalendarFab
+          actuaciones={actuaciones}
+          onClick={() => setCalendarOpen(true)}
+        />
+      )}
+
+      <CalendarSheet
+        open={calendarOpen}
+        actuaciones={actuaciones}
+        casetas={casetas}
+        onClose={() => setCalendarOpen(false)}
+        onSelectCaseta={(id) => {
+          setSelectedId(id);
+          setPanelExpanded(true);
+        }}
+      />
     </div>
   );
 }

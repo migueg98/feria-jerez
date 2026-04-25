@@ -1,31 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  TransformWrapper,
-  TransformComponent,
-  useControls,
-} from 'react-zoom-pan-pinch';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 const planoUrl = `${import.meta.env.BASE_URL}plano-feria.jpg`;
 const planoFallback = `${import.meta.env.BASE_URL}plano-feria.svg`;
-
-function ZoomControls() {
-  const { zoomIn, zoomOut, resetTransform } = useControls();
-  return (
-    <div className="zoom-controls">
-      <button type="button" onClick={() => zoomIn(0.25, 350, 'easeOutCubic')} aria-label="Acercar">+</button>
-      <button type="button" onClick={() => zoomOut(0.25, 350, 'easeOutCubic')} aria-label="Alejar">−</button>
-      <button
-        type="button"
-        onClick={() => resetTransform(500, 'easeOutCubic')}
-        aria-label="Vista general"
-        title="Vista general"
-        style={{ fontSize: 16 }}
-      >
-        ⟳
-      </button>
-    </div>
-  );
-}
 
 // Convierte coordenadas de pantalla a coordenadas del plano (sistema mapSize).
 function screenToPlano(clientX, clientY, bgEl, mapSize) {
@@ -444,7 +421,6 @@ export default function MapView({
           }
         }}
       >
-        <ZoomControls />
         <TransformComponent
           wrapperClass="plano-wrapper"
           contentClass="plano-content"

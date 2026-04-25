@@ -1355,38 +1355,53 @@ button {
 }
 
 /* =============================================
-   BOTONES DE ZOOM FLOTANTES (opcional, sobre el plano)
+   FAB CALENDARIO (esquina inferior derecha del mapa)
    ============================================= */
 
-.zoom-controls {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  z-index: 50;
-}
-
-.zoom-controls button {
-  width: 36px;
-  height: 36px;
-  border: 1px solid #d1d5db;
-  background: white;
-  color: #374151;
-  border-radius: 6px;
-  font-size: 20px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+.calendar-fab {
+  position: fixed;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  right: 18px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #b91c1c;
+  color: white;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+  z-index: 60;
+  transition: transform 0.15s, background 0.15s;
 }
 
-.zoom-controls button:hover {
-  background: #f9fafb;
+.calendar-fab:hover { background: #991b1b; }
+.calendar-fab:active { transform: scale(0.96); }
+
+.calendar-fab-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background: #fbbf24;
+  color: #1f2937;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  border: 2px solid white;
+}
+
+/* Si el bottom-sheet de la ficha está abierto, subimos el FAB un poco */
+.app:has(.caseta-sheet.expanded) .calendar-fab {
+  display: none;
 }
 
 /* =============================================
@@ -1685,4 +1700,622 @@ button {
   background: #fee2e2;
   padding: 6px 8px;
   border-radius: 4px;
+}
+
+/* =============================================
+   CALENDARIO DE ACTUACIONES — modal a pantalla completa
+   ============================================= */
+
+.calendar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1500;
+  animation: fadeIn 0.18s ease-out;
+}
+
+.calendar-sheet {
+  position: fixed;
+  inset: 0;
+  background: #fafaf7;
+  z-index: 1501;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.22s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding-top: max(14px, env(safe-area-inset-top));
+}
+
+.calendar-header h2 {
+  margin: 0 0 2px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.calendar-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.calendar-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  border: none;
+  color: #1f2937;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.calendar-close:hover { background: #e5e7eb; }
+
+.calendar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px max(80px, env(safe-area-inset-bottom));
+  -webkit-overflow-scrolling: touch;
+}
+
+.calendar-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #4b5563;
+}
+
+.calendar-empty p { margin: 4px 0; }
+.calendar-empty .muted { font-size: 13px; color: #9ca3af; }
+
+.calendar-day { margin-bottom: 18px; }
+
+.calendar-day-header {
+  position: sticky;
+  top: -12px;
+  z-index: 1;
+  background: #fafaf7;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: capitalize;
+  color: #4b5563;
+  padding: 8px 4px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 8px;
+}
+
+.calendar-day-header.is-today {
+  color: #b91c1c;
+}
+
+.calendar-day-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calendar-now {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.calendar-now-line {
+  flex: 1;
+  height: 2px;
+  background: #b91c1c;
+  border-radius: 2px;
+}
+
+.calendar-now-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #b91c1c;
+  background: #fee2e2;
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+
+.calendar-item-wrap { display: contents; }
+
+.calendar-item {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.1s, border-color 0.15s, box-shadow 0.15s;
+}
+.calendar-item:hover {
+  border-color: #fcd34d;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+.calendar-item:active { transform: scale(0.99); }
+
+.calendar-item.is-past {
+  opacity: 0.55;
+  background: #f9fafb;
+}
+
+.calendar-item.is-live {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.15);
+}
+
+.calendar-item-time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.calendar-item-time strong {
+  font-size: 16px;
+  color: #111827;
+  line-height: 1.1;
+}
+.calendar-item-time .muted {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.calendar-item-body { min-width: 0; }
+
+.calendar-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calendar-item-caseta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.calendar-item-num {
+  background: #b91c1c;
+  color: white;
+  font-weight: 700;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.calendar-item-status { display: flex; align-items: center; }
+
+.badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+}
+.badge-past { background: #e5e7eb; color: #6b7280; }
+.badge-live {
+  background: #16a34a;
+  color: white;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* =============================================
+   DETALLE DE ACTUACIÓN — modal sobre el calendario
+   ============================================= */
+
+.event-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1600;
+  animation: fadeIn 0.18s ease-out;
+}
+
+.event-modal {
+  position: fixed;
+  z-index: 1601;
+  background: white;
+  border-radius: 14px;
+  max-width: 460px;
+  width: calc(100vw - 28px);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  animation: slideUp 0.2s ease-out;
+}
+
+.event-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  color: #111;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+.event-cartel {
+  display: block;
+  width: 100%;
+  border: none;
+  padding: 0;
+  background: #f3f4f6;
+  cursor: zoom-in;
+}
+
+.event-cartel img {
+  display: block;
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+}
+
+.event-body { padding: 18px 18px 22px; }
+
+.event-title {
+  margin: 0 0 12px;
+  font-size: 20px;
+  color: #1f2937;
+  line-height: 1.25;
+}
+
+.event-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 14px;
+}
+
+.event-meta-row { display: flex; gap: 8px; align-items: baseline; }
+.event-meta-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #9ca3af;
+  min-width: 56px;
+}
+
+.event-description {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+.event-cta {
+  width: 100%;
+  background: #b91c1c;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.event-cta:hover { background: #991b1b; }
+
+/* =============================================
+   FICHA PÚBLICA — pestañas Información / Actuaciones
+   ============================================= */
+
+.panel-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #e5e7eb;
+  margin: 4px 0 14px;
+}
+
+.panel-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 10px 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  font-family: inherit;
+  position: relative;
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.panel-tab.is-active {
+  color: #b91c1c;
+}
+.panel-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: #b91c1c;
+}
+
+.panel-tab-count {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+  min-width: 20px;
+  text-align: center;
+}
+.panel-tab.is-active .panel-tab-count { background: #b91c1c; color: white; }
+
+/* Pestaña Actuaciones — lista en la ficha */
+
+.panel-actuaciones-empty {
+  padding: 22px 10px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.panel-actuaciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panel-actuacion {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: white;
+  overflow: hidden;
+}
+
+.panel-actuacion.is-past { opacity: 0.6; background: #fafafa; }
+.panel-actuacion.is-live { border-color: #16a34a; }
+
+.panel-actuacion-head {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.panel-actuacion-time {
+  display: flex;
+  flex-direction: column;
+}
+.panel-actuacion-time strong { font-size: 15px; color: #111827; line-height: 1.1; }
+.panel-actuacion-time .muted { font-size: 11px; color: #9ca3af; text-transform: capitalize; }
+
+.panel-actuacion-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.panel-actuacion-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.panel-actuacion-chev {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.panel-actuacion-body {
+  padding: 0 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.panel-actuacion-cartel {
+  display: block;
+  width: 100%;
+  background: #f3f4f6;
+  border: none;
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.panel-actuacion-cartel img {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+}
+
+.panel-actuacion-meta {
+  font-size: 13px;
+  color: #4b5563;
+  text-transform: capitalize;
+}
+
+.panel-actuacion-desc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+/* =============================================
+   EDITOR — Actuaciones de la caseta
+   ============================================= */
+
+.actuaciones-editor {
+  border-top: 1px solid #e5e7eb;
+  padding: 12px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.actuaciones-editor-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actuaciones-empty {
+  font-size: 12px;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.actuaciones-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.actuaciones-item {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.actuaciones-item.is-past { opacity: 0.65; }
+
+.actuaciones-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.actuaciones-item-time {
+  font-size: 11px;
+  color: #6b7280;
+  text-transform: capitalize;
+}
+
+.actuaciones-item-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.actuaciones-item-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.actuaciones-item-actions .btn { flex: 1; }
+
+.btn-small {
+  font-size: 11px !important;
+  padding: 5px 8px !important;
+}
+
+.btn-danger {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+  border-color: #fecaca !important;
+}
+
+.actuaciones-item.is-editing {
+  background: #fffbeb;
+  border-color: #fcd34d;
+}
+
+.actuacion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.actuacion-form-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.actuacion-form-actions .btn { flex: 1; }
+
+/* En móvil más pequeño, baja el FAB para no taparse con el handle de la ficha */
+@media (max-width: 767px) {
+  .calendar-fab {
+    bottom: max(20px, calc(env(safe-area-inset-bottom) + 8px));
+  }
+  /* Cuando el bottom-sheet de la ficha está colapsado, subimos el FAB */
+  .app:has(.caseta-sheet.collapsed) .calendar-fab {
+    bottom: 96px;
+  }
+  /* Cuando el editor mobile está abierto lo escondemos para no estorbar */
+  .app-editor:not(.app-editor-panel-collapsed) .calendar-fab {
+    display: none;
+  }
 }
