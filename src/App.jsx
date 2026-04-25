@@ -194,12 +194,14 @@ export default function App() {
     if (status !== 'ready') return;
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
-    const id = params.get('caseta');
-    if (!id) return;
-    const target = casetas.find((c) => c.id === id);
+    const raw = params.get('caseta');
+    if (!raw) return;
+    // Comparamos como string porque el id de la URL siempre llega como string,
+    // mientras que en casetas.json es number.
+    const target = casetas.find((c) => String(c.id) === raw);
     if (!target) return;
     deepLinkAppliedRef.current = true;
-    setSelectedId(id);
+    setSelectedId(target.id);
     setPanelExpanded(true);
   }, [editorMode, status, casetas]);
 
