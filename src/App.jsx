@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import MapView from './components/MapView.jsx';
 import SearchBar from './components/SearchBar.jsx';
 import CasetaPanel from './components/CasetaPanel.jsx';
@@ -22,8 +22,31 @@ const DEFAULT_TAMANO_CIRC = { radio: 10 };
 export default function App() {
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState(null);
+  // Estado del bottom sheet de la ficha pública (compartido para que el click
+  // fuera primero comprima y un segundo click deseleccione la caseta).
+  const [panelExpanded, setPanelExpanded] = useState(false);
   const [editorSelectedId, setEditorSelectedId] = useState(null);
   const [lastAssigned, setLastAssigned] = useState(null);
+  // Editor móvil: panel inferior desplegable / minimizado (más mapa)
+  const [isEditorNarrow, setIsEditorNarrow] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 767px)').matches,
+  );
+  const [editorSheetExpanded, setEditorSheetExpanded] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    const onChange = () => setIsEditorNarrow(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  // En escritorio el panel vuelve a ancho fijo: siempre “expandido” lógico
+  useEffect(() => {
+    if (!isEditorNarrow) setEditorSheetExpanded(true);
+  }, [isEditorNarrow]);
 
   // Sincronización con Supabase (lectura + realtime + writes optimistas)
   const { casetas, status, updateCaseta, resetCaseta, stats } =
@@ -153,17 +176,6 @@ export default function App() {
     setLastAssigned(null);
   }, [editorSelectedId, resetCaseta]);
 
-  const handleDownload = useCallback(() => {
-    const json = JSON.stringify(casetas, null, 2) + '\n';
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'casetas.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  }, [casetas]);
-
   // Al activar editor, auto-seleccionar primera pendiente si nada está seleccionado
   useEffect(() => {
     if (!editorMode) return;
@@ -173,8 +185,32 @@ export default function App() {
     if (first) setEditorSelectedId(first.id);
   }, [editorMode, editorSelectedId, casetas, status]);
 
+  // Deep-link ?caseta=ID — al recibir un enlace compartido, abrir la ficha
+  // y desplegarla. Solo en vista pública y solo una vez tras cargar datos.
+  const deepLinkAppliedRef = useRef(false);
+  useEffect(() => {
+    if (editorMode) return;
+    if (deepLinkAppliedRef.current) return;
+    if (status !== 'ready') return;
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('caseta');
+    if (!id) return;
+    const target = casetas.find((c) => c.id === id);
+    if (!target) return;
+    deepLinkAppliedRef.current = true;
+    setSelectedId(id);
+    setPanelExpanded(true);
+  }, [editorMode, status, casetas]);
+
   return (
-    <div className={`app ${editorMode ? 'app-editor' : ''}`}>
+    <div
+      className={`app ${editorMode ? 'app-editor' : ''} ${
+        editorMode && isEditorNarrow && !editorSheetExpanded
+          ? 'app-editor-panel-collapsed'
+          : ''
+      }`}
+    >
       <header className="app-header">
         <h1>Feria de Jerez</h1>
         <span className="app-subtitle">Mapa de casetas</span>
@@ -199,7 +235,15 @@ export default function App() {
               setEditorSelectedId(id);
             } else {
               setSelectedId(id);
+              setPanelExpanded(false);
             }
+          }}
+          // Click en zona vacía del plano (modo público): si la ficha está
+          // desplegada → primero la comprime; si ya está comprimida → deselecciona.
+          onMapClick={() => {
+            if (editorMode) return;
+            if (panelExpanded) setPanelExpanded(false);
+            else setSelectedId(null);
           }}
           editorMode={editorMode}
           onEditorClick={handleEditorClick}
@@ -209,7 +253,16 @@ export default function App() {
       </main>
 
       {!editorMode && selectedCaseta && (
-        <CasetaPanel caseta={selectedCaseta} onClose={() => setSelectedId(null)} />
+        <CasetaPanel
+          caseta={selectedCaseta}
+          expanded={panelExpanded}
+          onToggleExpanded={() => setPanelExpanded((v) => !v)}
+          onCollapse={() => setPanelExpanded(false)}
+          onClose={() => {
+            setSelectedId(null);
+            setPanelExpanded(false);
+          }}
+        />
       )}
 
       {editorMode && (
@@ -221,10 +274,12 @@ export default function App() {
           onFieldChange={handleFieldChange}
           onToggleLock={handleToggleLock}
           onResetSelected={handleResetSelected}
-          onDownload={handleDownload}
           stats={stats}
           lastAssigned={lastAssigned}
           syncStatus={status}
+          isNarrow={isEditorNarrow}
+          sheetExpanded={isEditorNarrow ? editorSheetExpanded : true}
+          onSheetExpandedChange={setEditorSheetExpanded}
         />
       )}
     </div>

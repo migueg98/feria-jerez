@@ -139,7 +139,9 @@ function CasetaShape({
       tabIndex={0}
     >
       <span className="caseta-label">{caseta.numero}</span>
-      {caseta.locked && <span className="caseta-lock-badge" aria-hidden="true">🔒</span>}
+      {editorMode && caseta.locked && (
+        <span className="caseta-lock-badge" aria-hidden="true">🔒</span>
+      )}
       {editorMode && isSelected && !caseta.locked && (
         <ResizeHandles
           caseta={caseta}
@@ -247,6 +249,7 @@ export default function MapView({
   casetas,
   selectedId,
   onSelect,
+  onMapClick,
   editorMode,
   onEditorClick,
   onMoveCaseta,
@@ -278,15 +281,16 @@ export default function MapView({
     img.src = planoUrl;
   }, []);
 
-  // minScale dinámico según tamaño del contenedor
+  // minScale dinámico: el mapa SIEMPRE cubre la pantalla por completo
+  // (Math.max) → no se ve fondo nunca. La dimensión sobrante permite paneo.
   useEffect(() => {
     const update = () => {
       if (!containerRef.current) return;
       const cw = containerRef.current.clientWidth;
       const ch = containerRef.current.clientHeight;
       if (!cw || !ch) return;
-      const fit = Math.min(cw / mapSize.w, ch / mapSize.h);
-      setMinScale(Math.max(fit * 0.95, 0.05));
+      const cover = Math.max(cw / mapSize.w, ch / mapSize.h);
+      setMinScale(cover);
     };
     update();
     const ro = new ResizeObserver(update);
@@ -294,14 +298,42 @@ export default function MapView({
     return () => ro.disconnect();
   }, [mapSize]);
 
+  // Cuando cambia el minScale (al medir el contenedor o al hacer resize),
+  // forzamos el visor a empezar exactamente en ese minScale, centrado.
+  // Esto evita que el initialScale (valor obsoleto) deje el contenido
+  // por debajo del mínimo y los bounds se rompan.
+  const initializedRef = useRef(false);
+  useEffect(() => {
+    if (!transformRef.current || !containerRef.current) return;
+    const cont = containerRef.current;
+    const w = cont.clientWidth;
+    const h = cont.clientHeight;
+    if (!w || !h) return;
+    const currentScale =
+      transformRef.current.instance?.transformState?.scale || 0;
+    // Sólo reseteamos si: es la primera vez, o el zoom actual quedó por debajo
+    // del nuevo mínimo (p. ej. tras rotar el dispositivo).
+    if (initializedRef.current && currentScale >= minScale - 0.001) return;
+    initializedRef.current = true;
+    const planoW = mapSize.w * minScale;
+    const planoH = mapSize.h * minScale;
+    transformRef.current.setTransform(
+      (w - planoW) / 2,
+      (h - planoH) / 2,
+      minScale,
+      0,
+    );
+  }, [minScale, mapSize]);
+
   // Mantener casetas en ref para evitar re-disparar el zoom al editar campos
   const casetasRef = useRef(casetas);
   useEffect(() => {
     casetasRef.current = casetas;
   }, [casetas]);
 
-  // Zoom a la caseta seleccionada (solo al cambiar la selección, no al editar).
-  // Animación lineal y destino moderado para que el salto sea gradual.
+  // Zoom a la caseta seleccionada (sólo al cambiar la selección).
+  // Clamp duro en X e Y respecto al borde del mapa: si la caseta está cerca
+  // del borde, NO se centra — la imagen queda pegada al borde de la pantalla.
   useEffect(() => {
     if (!selectedId || !transformRef.current || !containerRef.current) return;
     const caseta = casetasRef.current.find((c) => c.id === selectedId);
@@ -310,30 +342,52 @@ export default function MapView({
     const cont = containerRef.current;
     const w = cont.clientWidth;
     const h = cont.clientHeight;
-    // Respetamos el zoom actual si ya estaba cerca; sino subimos ligeramente.
     const currentScale = transformRef.current.instance?.transformState?.scale || minScale;
-    const comfy = Math.max(minScale * 1.6, 0.7);
+    const comfy = Math.max(minScale * 1.4, 0.6);
     const target = Math.max(currentScale, comfy);
-    transformRef.current.setTransform(
-      -x * target + w / 2,
-      -y * target + h / 2,
-      target,
-      1000,
-      'linear',
-    );
-  }, [selectedId, minScale]);
+
+    let posX = w / 2 - x * target;
+    let posY = h / 2 - y * target;
+
+    // Tamaño del mapa en pantalla con la escala objetivo
+    const planoW = mapSize.w * target;
+    const planoH = mapSize.h * target;
+
+    // Clamp X: si el mapa es más ancho que la pantalla → no se ven huecos a
+    // los lados. Si es más estrecho, se centra horizontalmente.
+    if (planoW >= w) {
+      posX = Math.max(w - planoW, Math.min(0, posX));
+    } else {
+      posX = (w - planoW) / 2;
+    }
+    // Clamp Y idéntico
+    if (planoH >= h) {
+      posY = Math.max(h - planoH, Math.min(0, posY));
+    } else {
+      posY = (h - planoH) / 2;
+    }
+
+    transformRef.current.setTransform(posX, posY, target, 450, 'easeOut');
+  }, [selectedId, minScale, mapSize]);
 
   const handlePlanoClick = useCallback(
     (e) => {
       if (editorMode && onEditorClick) {
-        const bg = e.currentTarget;
-        const coords = screenToPlano(e.clientX, e.clientY, bg, mapSize);
+        if (!planoBgRef.current) return;
+        const coords = screenToPlano(
+          e.clientX,
+          e.clientY,
+          planoBgRef.current,
+          mapSize,
+        );
         onEditorClick(Math.round(coords.x), Math.round(coords.y));
         return;
       }
-      if (!editorMode) onSelect(null);
+      // Modo público: que App decida (comprimir ficha vs deseleccionar)
+      if (onMapClick) onMapClick();
+      else if (onSelect) onSelect(null);
     },
-    [editorMode, onEditorClick, mapSize, onSelect],
+    [editorMode, onEditorClick, mapSize, onMapClick, onSelect],
   );
 
   return (
@@ -345,17 +399,50 @@ export default function MapView({
         maxScale={8}
         centerOnInit
         limitToBounds
-        smooth
-        wheel={{ step: 0.03, smoothStep: 0.0012 }}
-        doubleClick={{ mode: 'zoomIn', step: 0.2, animationTime: 300, animationType: 'linear' }}
+        wheel={{ step: 0.05, smoothStep: 0.003 }}
+        doubleClick={{ mode: 'zoomIn', step: 0.5, animationTime: 250, animationType: 'easeOut' }}
         panning={{
-          velocityDisabled: false,
+          // Sin inercia + sin overdrag = bloqueo duro al borde, sin rebote.
+          velocityDisabled: true,
           excluded: ['caseta-rect', 'caseta-circulo', 'caseta-handle', 'caseta-label'],
         }}
-        pinch={{ step: 1 }}
-        velocityAnimation={{ sensitivity: 1, animationTime: 450, animationType: 'linear' }}
-        zoomAnimation={{ animationTime: 300, animationType: 'linear' }}
-        alignmentAnimation={{ animationTime: 500, animationType: 'linear' }}
+        pinch={{ step: 4 }}
+        velocityAnimation={{ sensitivity: 0, animationTime: 0 }}
+        zoomAnimation={{ animationTime: 220, animationType: 'easeOut' }}
+        alignmentAnimation={{ sizeX: 0, sizeY: 0, animationTime: 0 }}
+        onZoomStop={(ref) => {
+          // Sanity check: si por cualquier motivo el scale ha caído por debajo
+          // del mínimo, lo devolvemos al mínimo (instantáneo, sin rebote).
+          const s = ref.instance?.transformState?.scale;
+          if (s && s < minScale - 0.001 && containerRef.current) {
+            const w = containerRef.current.clientWidth;
+            const h = containerRef.current.clientHeight;
+            const planoW = mapSize.w * minScale;
+            const planoH = mapSize.h * minScale;
+            ref.setTransform(
+              (w - planoW) / 2,
+              (h - planoH) / 2,
+              minScale,
+              0,
+            );
+          }
+        }}
+        onPanningStop={(ref) => {
+          // Mismo sanity check al soltar el dedo tras paneo
+          const s = ref.instance?.transformState?.scale;
+          if (s && s < minScale - 0.001 && containerRef.current) {
+            const w = containerRef.current.clientWidth;
+            const h = containerRef.current.clientHeight;
+            const planoW = mapSize.w * minScale;
+            const planoH = mapSize.h * minScale;
+            ref.setTransform(
+              (w - planoW) / 2,
+              (h - planoH) / 2,
+              minScale,
+              0,
+            );
+          }
+        }}
       >
         <ZoomControls />
         <TransformComponent

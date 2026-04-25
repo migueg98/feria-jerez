@@ -20,7 +20,7 @@ import { supabase } from '../lib/supabase.js';
  */
 
 const COLUMNS =
-  'id,numero,nombre,tipo,descripcion,musica,foto,acceso,posicion,forma,tamano,locked';
+  'id,numero,nombre,tipo,descripcion,musica,foto,foto_menu,tags,acceso,posicion,forma,tamano,locked';
 
 function toRow(c) {
   return {
@@ -31,6 +31,8 @@ function toRow(c) {
     descripcion: c.descripcion ?? null,
     musica: c.musica ?? null,
     foto: c.foto ?? null,
+    foto_menu: c.foto_menu ?? null,
+    tags: c.tags ?? null,
     acceso: c.acceso ?? null,
     posicion: c.posicion ?? null,
     forma: c.forma ?? null,

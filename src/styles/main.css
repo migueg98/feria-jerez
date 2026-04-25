@@ -235,7 +235,9 @@ button {
   height: 100%;
   position: relative;
   overflow: hidden;
-  background: #f4e4c1;
+  /* Fondo oscuro detrás del plano (se ve cuando arrastras más allá del borde
+     vertical, o cuando el mapa es más estrecho que la pantalla). */
+  background: #1a1410;
   touch-action: none;
 }
 
@@ -245,11 +247,7 @@ button {
   height: 100% !important;
 }
 
-.map-view .plano-content {
-  /* contenido interno con tamaño natural del plano */
-}
-
-/* Contenedor del plano: tamaño natural (1024x707), pan/zoom lo escala */
+/* Contenedor del plano: tamaño natural, pan/zoom lo escala */
 .plano-bg {
   position: relative;
   cursor: grab;
@@ -265,7 +263,8 @@ button {
    CASETAS (rectángulos y círculos interactivos sobre el plano)
    ============================================= */
 
-/* Por defecto semi-invisibles, se iluminan al seleccionar como laferiadejerez.es */
+/* Casetas: fondo casi transparente para no tapar el mapa, pero el número SIEMPRE
+   visible (la imagen del plano no tiene los números impresos). */
 .caseta-rect,
 .caseta-circulo {
   position: absolute;
@@ -273,9 +272,9 @@ button {
   padding: 0;
   background: rgba(255, 255, 255, 0.01);
   border: 1.5px solid rgba(139, 58, 74, 0);
-  color: transparent;
-  font-weight: 700;
-  font-size: 9px;
+  color: #1c0f00;
+  font-weight: 800;
+  font-size: 22px;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -291,7 +290,13 @@ button {
 .caseta-rect { border-radius: 2px; }
 .caseta-circulo { border-radius: 50%; }
 
-.caseta-label { pointer-events: none; }
+/* Número de caseta: sin halo, peso normal, ~50% más grande que la base 22px */
+.caseta-label {
+  pointer-events: none;
+  font-size: 33px;
+  font-weight: 400;
+  text-shadow: none;
+}
 
 .caseta-rect:hover,
 .caseta-circulo:hover {
@@ -393,7 +398,8 @@ button {
   to { opacity: 1; }
 }
 
-.caseta-panel {
+/* Bottom sheet: compacto por defecto, se despliega al tocar la barra superior */
+.caseta-sheet {
   position: fixed;
   left: 0;
   right: 0;
@@ -402,9 +408,19 @@ button {
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
   z-index: 1101;
+  overflow: hidden;
+  transition: max-height 0.32s ease-out;
+  animation: slideUp 0.25s ease-out;
+}
+
+.caseta-sheet.collapsed {
+  max-height: 72px;
+}
+
+.caseta-sheet.expanded {
   max-height: 85vh;
   overflow-y: auto;
-  animation: slideUp 0.25s ease-out;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes slideUp {
@@ -412,23 +428,132 @@ button {
   to { transform: translateY(0); }
 }
 
-.panel-close {
+/* Barra superior del bottom sheet: siempre visible, tap o swipe vertical */
+.sheet-handle-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  position: relative;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sheet-grip {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: #d1d5db;
+}
+
+.sheet-handle-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding-top: 6px;
+}
+
+.sheet-numero {
+  background: var(--color-primary);
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.sheet-nombre {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.sheet-chevron {
+  font-size: 18px;
+  color: var(--color-text-muted);
+  padding: 0 4px;
+  margin-top: 6px;
+}
+
+.sheet-body {
+  border-top: 1px solid var(--color-border);
+  position: relative;
+  animation: fadeIn 0.2s;
+}
+
+/* Botones flotantes (compartir + cerrar) sobre la foto de cabecera */
+.panel-top-actions {
   position: absolute;
   top: 8px;
   right: 8px;
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+
+.panel-icon-btn {
   width: 36px;
   height: 36px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.95);
   border: none;
-  font-size: 24px;
-  line-height: 1;
-  color: var(--color-text);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  z-index: 2;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  padding: 0;
+}
+.panel-icon-btn:hover { background: white; }
+.panel-icon-btn:active { transform: scale(0.94); }
+
+.panel-close {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.panel-share-btn {
+  color: var(--color-primary);
+}
+
+/* Toast de confirmación (solo escritorio sin Web Share API) */
+.panel-share-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  background: rgba(17, 24, 39, 0.92);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 5;
+  pointer-events: none;
+  animation: fadeIn 0.18s ease-out;
 }
 
 .panel-photo {
@@ -532,12 +657,6 @@ button {
   border-radius: 4px;
 }
 
-.panel-actions {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-}
-
 .btn {
   flex: 1;
   border: none;
@@ -556,15 +675,6 @@ button {
   transform: scale(0.98);
 }
 
-.btn-whatsapp {
-  background: #25d366;
-  color: white;
-}
-
-.btn-whatsapp:hover {
-  background: #1ea855;
-}
-
 /* =============================================
    BADGES DE TIPO (colores por categoría)
    ============================================= */
@@ -577,9 +687,10 @@ button {
 /* Reemplazar el texto del badge "no_tradicional" para que muestre un espacio */
 .tipo-no_tradicional { text-transform: none; }
 
-/* Badges de acceso público/privado */
+/* Badges de acceso */
 .acceso-publica { background: #dcfce7; color: #166534; }
 .acceso-privada { background: #fce7f3; color: #9d174d; }
+.acceso-servicios_publicos { background: #e0e7ff; color: #3730a3; }
 
 /* =============================================
    MODO EDITOR (solo con ?editor=1 en la URL)
@@ -609,6 +720,35 @@ button {
   align-items: center;
   font-size: 12px;
   letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+/* Zona scrollable interna del panel: contiene formulario y lista */
+.editor-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Toggle para abrir/cerrar la lista de casetas */
+.editor-list-toggle {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  background: #f9fafb;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+}
+.editor-list-toggle:hover {
+  background: #f3f4f6;
 }
 
 .editor-progress {
@@ -628,6 +768,7 @@ button {
 .editor-sync.sync-saving { background: #dbeafe; color: #1e40af; }
 .editor-sync.sync-error { background: #fee2e2; color: #991b1b; }
 .editor-sync.sync-offline { background: #fef3c7; color: #92400e; }
+.editor-sync { flex-shrink: 0; }
 
 .editor-current {
   padding: 12px 14px;
@@ -884,8 +1025,6 @@ button {
   list-style: none;
   padding: 0;
   margin: 0;
-  overflow-y: auto;
-  flex: 1;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -960,6 +1099,8 @@ button {
   flex-wrap: wrap;
   gap: 6px;
   background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  flex-shrink: 0;
 }
 
 .editor-actions .btn {
@@ -1004,20 +1145,181 @@ button {
   }
 }
 
-/* En móvil, el panel editor ocupa la mitad inferior */
+/* Móvil: panel editor como “bottom sheet” — barra de arrastre, minimizable */
+.editor-panel--mobile-sheet {
+  top: auto;
+  left: 0;
+  right: 0;
+  width: auto;
+  border-left: none;
+  border-top: 2px solid #f59e0b;
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.18);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  transition: max-height 0.28s ease, height 0.28s ease;
+}
+
+.editor-panel--mobile-sheet.editor-panel--sheet-open {
+  height: 65vh;
+  max-height: 65vh;
+}
+
+.editor-panel--mobile-sheet.editor-panel--sheet-collapsed {
+  --editor-mobile-strip: 100px;
+  height: var(--editor-mobile-strip);
+  max-height: var(--editor-mobile-strip);
+  overflow: hidden;
+}
+
+.editor-mobile-handle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 10px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #fff8e6 0%, #fef3c7 100%);
+  border-bottom: 1px solid #fcd34d;
+  cursor: pointer;
+  position: relative;
+  touch-action: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.editor-panel--sheet-collapsed .editor-mobile-handle {
+  border-bottom: none;
+  flex: 1;
+  min-height: 0;
+  align-items: flex-start;
+}
+
+.editor-mobile-grip {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: #d1d5db;
+  pointer-events: none;
+}
+
+.editor-mobile-handle-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.editor-panel--sheet-open .editor-mobile-handle .editor-mobile-handle-content {
+  padding-top: 6px;
+}
+
+.editor-mobile-hint {
+  font-size: 12px;
+  color: #78350f;
+  line-height: 1.3;
+}
+
+.editor-mobile-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  color: #1c0f00;
+}
+
+.editor-mobile-stats-brief {
+  font-size: 12px;
+  color: #78350f;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.editor-mobile-caseta-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 13px;
+  color: #1c0f00;
+}
+
+.editor-mobile-caseta-line.muted {
+  color: #78350f;
+  font-style: italic;
+  font-size: 12px;
+}
+
+.editor-mobile-caseta-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editor-mobile-chevron {
+  font-size: 20px;
+  color: #b45309;
+  flex-shrink: 0;
+  line-height: 1;
+  padding: 0 2px 8px 0;
+}
+
+/* Mapa: altura = viewport − cabeza − búsqueda − panel (65vh o franja colapsada) */
 @media (max-width: 767px) {
-  .editor-panel {
-    top: auto;
-    left: 0;
-    right: 0;
-    width: auto;
-    height: 45vh;
-    border-left: none;
-    border-top: 2px solid #f59e0b;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
-  }
   .app-editor .app-map {
-    height: calc(100% - 45vh);
+    height: calc(
+      100dvh - var(--header-height) - var(--search-height) - 65vh
+    );
+    min-height: 100px;
+    flex: none;
+  }
+  .app-editor.app-editor-panel-collapsed .app-map {
+    height: calc(
+      100dvh - var(--header-height) - var(--search-height) - var(
+        --editor-mobile-strip,
+        100px
+      )
+    );
+    min-height: 100px;
+  }
+
+  /* Padding y tamaño de fuente más cómodos en móvil dentro del editor */
+  .editor-current,
+  .caseta-form,
+  .editor-row-actions,
+  .editor-controls {
+    padding: 12px 14px;
+  }
+  .caseta-form input[type='text'],
+  .caseta-form input[type='search'],
+  .caseta-form select,
+  .caseta-form textarea,
+  .editor-filter {
+    font-size: 16px; /* evita el auto-zoom de iOS al enfocar inputs */
+    padding: 10px 12px;
+  }
+  .tag-chip,
+  .editor-item {
+    min-height: 40px;
+  }
+  .editor-actions .btn {
+    padding: 12px 10px;
+    font-size: 14px;
+  }
+  .editor-close {
+    width: 32px;
+    height: 32px;
+    font-size: 22px;
   }
 }
 
@@ -1035,13 +1337,16 @@ button {
     font-size: 22px;
   }
 
-  .caseta-panel {
+  .caseta-sheet {
     left: auto;
     right: 20px;
     bottom: 20px;
     width: 400px;
-    max-height: calc(100vh - 120px);
     border-radius: var(--radius-lg);
+  }
+
+  .caseta-sheet.expanded {
+    max-height: calc(100vh - 120px);
   }
 
   .panel-backdrop {
@@ -1082,4 +1387,302 @@ button {
 
 .zoom-controls button:hover {
   background: #f9fafb;
+}
+
+/* =============================================
+   ETIQUETAS (TAGS) — chips en ficha pública y editor
+   ============================================= */
+
+.panel-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px;
+}
+
+.panel-tag {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f3e9d8;
+  color: #5a3f17;
+  font-weight: 600;
+  border: 1px solid #e6d5b8;
+}
+
+.panel-tag-musica { background: #fde7f3; color: #8b1d5d; border-color: #f8c8e0; }
+.panel-tag-publico { background: #e0f2fe; color: #075985; border-color: #bae6fd; }
+.panel-tag-ambiente { background: #ecfccb; color: #3f6212; border-color: #d9f99d; }
+.panel-tag-comida { background: #fff7ed; color: #9a3412; border-color: #fed7aa; }
+
+/* Sección genérica dentro del panel (Menú, etc.) */
+.panel-section {
+  margin: 16px 0;
+  padding-top: 12px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.panel-section-title {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+}
+
+.panel-menu-thumb {
+  position: relative;
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #f9fafb;
+  padding: 0;
+  cursor: zoom-in;
+  display: block;
+}
+
+.panel-menu-thumb img {
+  display: block;
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+}
+
+.panel-menu-zoom {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =============================================
+   LIGHTBOX (visor de fotos a pantalla completa)
+   ============================================= */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: zoom-out;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  cursor: default;
+  border-radius: 4px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  color: #111;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2001;
+}
+
+/* =============================================
+   EDITOR — Tags chips selectables
+   ============================================= */
+
+.tags-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 4px;
+  padding-top: 12px;
+}
+
+.tags-group-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #6b7280;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.tags-group-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag-chip {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  font-family: inherit;
+}
+
+.tag-chip:hover {
+  background: #fef3c7;
+  border-color: #fde68a;
+}
+
+.tag-chip.selected {
+  background: #f59e0b;
+  border-color: #b45309;
+  color: white;
+}
+
+/* Chips del campo Acceso en el editor */
+.tag-chip-acceso--publica.selected {
+  background: #16a34a;
+  border-color: #15803d;
+  color: white;
+}
+.tag-chip-acceso--privada.selected {
+  background: #b91c1c;
+  border-color: #7f1d1d;
+  color: white;
+}
+.tag-chip-acceso--servicios.selected {
+  background: #4f46e5;
+  border-color: #3730a3;
+  color: white;
+}
+
+/* Bloque de forma/tamaño/posición — desactivado cuando la caseta está bloqueada */
+.form-shape {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.form-shape.is-locked {
+  opacity: 0.55;
+  pointer-events: none;
+  filter: grayscale(0.4);
+}
+.form-locked-note {
+  margin: 4px 14px 0;
+  padding: 8px 10px;
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #78350f;
+  line-height: 1.35;
+}
+
+/* =============================================
+   EDITOR — FotoUploader
+   ============================================= */
+
+.foto-uploader {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 8px;
+}
+
+.foto-uploader-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.foto-uploader-empty {
+  width: 100%;
+  padding: 22px 12px;
+  background: #fafaf9;
+  border: 2px dashed #d1d5db;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.foto-uploader-empty:hover {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.foto-uploader-empty:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.foto-uploader-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-md);
+  padding: 6px;
+  background: white;
+}
+
+.foto-uploader-preview img {
+  display: block;
+  width: 100%;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.foto-uploader-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.foto-uploader-actions .btn {
+  flex: 1;
+  font-size: 12px;
+  padding: 6px;
+}
+
+.foto-uploader-error {
+  font-size: 11px;
+  color: #b91c1c;
+  background: #fee2e2;
+  padding: 6px 8px;
+  border-radius: 4px;
 }

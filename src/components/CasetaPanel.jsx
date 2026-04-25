@@ -1,3 +1,7 @@
+import { useRef, useState } from 'react';
+import Lightbox from './Lightbox.jsx';
+import { flattenTags } from '../data/tagsConfig.js';
+
 const TIPO_LABELS = {
   tradicional: 'Tradicional',
   no_tradicional: 'No tradicional',
@@ -8,6 +12,7 @@ const TIPO_LABELS = {
 const ACCESO_LABELS = {
   publica: 'Pública',
   privada: 'Privada',
+  servicios_publicos: 'Servicios públicos',
 };
 
 function getInitials(nombre) {
@@ -19,77 +24,241 @@ function getInitials(nombre) {
     .join('') || '?';
 }
 
-export default function CasetaPanel({ caseta, onClose }) {
-  const handleShareWhatsApp = () => {
-    const text = `🐴 ${caseta.nombre} (Caseta nº ${caseta.numero}) en la Feria de Jerez. Míralo en el mapa: ${window.location.href.split('?')[0]}?caseta=${caseta.id}`;
-    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
+export default function CasetaPanel({
+  caseta,
+  expanded,
+  onToggleExpanded,
+  onCollapse,
+  onClose,
+}) {
+  const dragRef = useRef(null);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [lightboxSrc, setLightboxSrc] = useState(null);
+  const [shareToast, setShareToast] = useState(null);
+
+  const handleShare = async (e) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}${window.location.pathname}?caseta=${caseta.id}`;
+    const data = {
+      title: `Caseta nº ${caseta.numero} – ${caseta.nombre}`,
+      text: `🐴 ${caseta.nombre} (Caseta nº ${caseta.numero}) en la Feria de Jerez`,
+      url,
+    };
+    const canUseShare =
+      typeof navigator.share === 'function' &&
+      (typeof navigator.canShare !== 'function' || navigator.canShare(data));
+    if (canUseShare) {
+      try {
+        await navigator.share(data);
+      } catch (err) {
+        if (err && err.name !== 'AbortError') console.error(err);
+      }
+      return;
+    }
+    // Sin Web Share API (escritorio o contexto no seguro): copiar enlace
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareToast('Enlace copiado');
+    } catch (_) {
+      setShareToast('Abre desde HTTPS para compartir');
+    }
+    setTimeout(() => setShareToast(null), 2200);
+  };
+
+  // --- Gesto drag vertical en la barra superior ---
+  const onPointerDown = (e) => {
+    dragRef.current = {
+      startY: e.clientY,
+      startTime: Date.now(),
+      moved: false,
+    };
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch (_) {}
+  };
+
+  const onPointerMove = (e) => {
+    if (!dragRef.current) return;
+    const dy = e.clientY - dragRef.current.startY;
+    if (Math.abs(dy) > 4) dragRef.current.moved = true;
+    if (expanded && dy > 0) setDragOffset(dy);
+    else if (!expanded && dy < 0) setDragOffset(dy);
+  };
+
+  const onPointerUp = (e) => {
+    if (!dragRef.current) return;
+    const dy = e.clientY - dragRef.current.startY;
+    const dt = Date.now() - dragRef.current.startTime;
+    const velocity = Math.abs(dy) / Math.max(dt, 1);
+    const moved = dragRef.current.moved;
+    dragRef.current = null;
+    setDragOffset(0);
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch (_) {}
+
+    if (!moved) {
+      onToggleExpanded?.();
+      return;
+    }
+    const threshold = 60;
+    if (expanded && (dy > threshold || velocity > 0.5)) {
+      onCollapse?.();
+    } else if (!expanded && (dy < -threshold || velocity > 0.5)) {
+      onToggleExpanded?.();
+    }
   };
 
   const tipoLabel = TIPO_LABELS[caseta.tipo] || caseta.tipo;
+  const tags = flattenTags(caseta.tags);
+
+  const sheetStyle =
+    dragOffset !== 0 ? { transform: `translateY(${dragOffset}px)` } : undefined;
 
   return (
     <>
-      <div className="panel-backdrop" onClick={onClose} />
-      <aside className="caseta-panel" role="dialog" aria-label={`Información de ${caseta.nombre}`}>
-        <button className="panel-close" onClick={onClose} aria-label="Cerrar">×</button>
-
-        <div className="panel-photo">
-          {caseta.foto ? (
-            <img src={caseta.foto} alt={caseta.nombre} />
-          ) : (
-            <div className="panel-photo-placeholder">
-              <span>{getInitials(caseta.nombre)}</span>
-            </div>
-          )}
+      {expanded && <div className="panel-backdrop" onClick={onCollapse} />}
+      <aside
+        className={`caseta-sheet ${expanded ? 'expanded' : 'collapsed'}`}
+        style={sheetStyle}
+        role="dialog"
+        aria-label={`Información de ${caseta.nombre}`}
+      >
+        <div
+          className="sheet-handle-bar"
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          role="button"
+          tabIndex={0}
+          aria-label={expanded ? 'Minimizar' : 'Desplegar información'}
+        >
+          <span className="sheet-grip" />
+          <div className="sheet-handle-content">
+            <span className="sheet-numero">{caseta.numero}</span>
+            <span className="sheet-nombre">{caseta.nombre}</span>
+          </div>
+          <span className="sheet-chevron">{expanded ? '▾' : '▴'}</span>
         </div>
 
-        <div className="panel-body">
-          <div className="panel-header">
-            <span className="panel-numero">Nº {caseta.numero}</span>
-            {caseta.tipo && (
-              <span className={`panel-tipo tipo-${caseta.tipo}`}>{tipoLabel}</span>
-            )}
-            {caseta.acceso && (
-              <span className={`panel-tipo acceso-${caseta.acceso}`}>
-                {ACCESO_LABELS[caseta.acceso] || caseta.acceso}
-              </span>
-            )}
-          </div>
-
-          <h2 className="panel-nombre">{caseta.nombre}</h2>
-
-          {caseta.descripcion && (
-            <p className="panel-descripcion">{caseta.descripcion}</p>
-          )}
-
-          {caseta.musica && (
-            <div className="panel-field">
-              <span className="panel-field-label">Música</span>
-              <span className="panel-field-value">{caseta.musica}</span>
+        {expanded && (
+          <div className="sheet-body">
+            <div className="panel-top-actions">
+              <button
+                type="button"
+                className="panel-icon-btn panel-share-btn"
+                onClick={handleShare}
+                aria-label="Compartir esta caseta"
+                title="Compartir"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                  <polyline points="7 8 12 3 17 8" />
+                </svg>
+              </button>
+              <button
+                className="panel-icon-btn panel-close"
+                onClick={onClose}
+                aria-label="Cerrar"
+              >
+                ×
+              </button>
             </div>
-          )}
 
-          {!caseta.posicion && (
-            <div className="panel-notice">
-              Ubicación pendiente de asignar en el plano.
-            </div>
-          )}
-
-          <div className="panel-actions">
-            <button
-              type="button"
-              className="btn btn-whatsapp"
-              onClick={handleShareWhatsApp}
+            <div
+              className="panel-photo"
+              onClick={() => caseta.foto && setLightboxSrc(caseta.foto)}
+              style={{ cursor: caseta.foto ? 'zoom-in' : 'default' }}
             >
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-              </svg>
-              Compartir por WhatsApp
-            </button>
+              {caseta.foto ? (
+                <img src={caseta.foto} alt={caseta.nombre} />
+              ) : (
+                <div className="panel-photo-placeholder">
+                  <span>{getInitials(caseta.nombre)}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="panel-body">
+              <div className="panel-header">
+                <span className="panel-numero">Nº {caseta.numero}</span>
+                {caseta.tipo && (
+                  <span className={`panel-tipo tipo-${caseta.tipo}`}>
+                    {tipoLabel}
+                  </span>
+                )}
+                {caseta.acceso && (
+                  <span className={`panel-tipo acceso-${caseta.acceso}`}>
+                    {ACCESO_LABELS[caseta.acceso] || caseta.acceso}
+                  </span>
+                )}
+              </div>
+
+              <h2 className="panel-nombre">{caseta.nombre}</h2>
+
+              {tags.length > 0 && (
+                <div className="panel-tags">
+                  {tags.map((t) => (
+                    <span
+                      key={`${t.groupId}-${t.value}`}
+                      className={`panel-tag panel-tag-${t.groupId}`}
+                    >
+                      {t.label}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {caseta.descripcion && (
+                <p className="panel-descripcion">{caseta.descripcion}</p>
+              )}
+
+              {caseta.foto_menu && (
+                <div className="panel-section">
+                  <h3 className="panel-section-title">Menú</h3>
+                  <button
+                    type="button"
+                    className="panel-menu-thumb"
+                    onClick={() => setLightboxSrc(caseta.foto_menu)}
+                    aria-label="Ver menú en grande"
+                  >
+                    <img src={caseta.foto_menu} alt="Menú" />
+                    <span className="panel-menu-zoom">🔍</span>
+                  </button>
+                </div>
+              )}
+
+              {!caseta.posicion && (
+                <div className="panel-notice">
+                  Ubicación pendiente de asignar en el plano.
+                </div>
+              )}
+
+            </div>
           </div>
-        </div>
+        )}
+        {shareToast && <div className="panel-share-toast">{shareToast}</div>}
       </aside>
+
+      {lightboxSrc && (
+        <Lightbox
+          src={lightboxSrc}
+          alt={caseta.nombre}
+          onClose={() => setLightboxSrc(null)}
+        />
+      )}
     </>
   );
 }
